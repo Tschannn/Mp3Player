@@ -168,6 +168,7 @@ public class PlayerViewController {
 		 slider.valueProperty().addListener((observable, oldValue, newValue) -> {
 	            float volume = newValue.floatValue();
 	            player.volume(volume);
+	            System.out.println(volume);
 	        });
 		  
 			/*slider.valueProperty().addListener((ChangeListener<? super Number>) new ChangeListener<Number>() {
