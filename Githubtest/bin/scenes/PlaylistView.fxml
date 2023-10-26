@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <top>
+      <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="17.0" text="Playlist View" textAlignment="CENTER" textOverrun="CLIP" />
+   </top>
+   <bottom>
+      <Button fx:id="backAction" mnemonicParsing="false" onAction="#backAction" text="Back" BorderPane.alignment="CENTER" />
+   	  <Button fx:id="zuruckButton" mnemonicParsing="false" onAction="#zuruckAction" text="Player" BorderPane.alignment="CENTER" />
+   </bottom>
+</BorderPane>

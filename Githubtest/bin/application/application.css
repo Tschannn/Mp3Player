@@ -1,0 +1,35 @@
+/* JavaFX CSS - Le/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+.main-text {
+	-fx-alignment: center;
+	-fx-font-family: Helvetica;
+	-fx-font-size: 22;
+}
+
+.second-text {
+	-fx-alignment: center;
+	-fx-font-family: Helvetica;
+	-fx-font-size: 14;
+	-fx-text-fill: grey;
+}
+
+#controller{
+	-fx-alignment: center;
+	-fx-padding: 10;
+}
+
+.control-button {
+	-fx-min-height: 32;
+	-fx-min-width: 32;
+	-fx-background-color: #00008B;
+	-fx-background-radius: 16;
+	-fx-text-fill: white;
+}
+
+.control-button:hover {
+	-fx-background-color: red;
+}
+
+.table{
+	-fx-background-color: yellow;
+}
