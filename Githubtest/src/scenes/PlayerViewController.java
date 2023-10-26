@@ -169,6 +169,7 @@ public class PlayerViewController {
 	            float volume = newValue.floatValue();
 	            player.volume(volume);
 	            System.out.println(volume);
+	            System.out.println("Angelos Angelakis");
 	        });
 		  
 			/*slider.valueProperty().addListener((ChangeListener<? super Number>) new ChangeListener<Number>() {
