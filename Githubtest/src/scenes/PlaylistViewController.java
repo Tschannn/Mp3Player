@@ -1,5 +1,6 @@
 package scenes;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,16 +19,21 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Callback;
+import javafx.stage.FileChooser;
 
 public class PlaylistViewController {
 	Main application;
 	Pane root;
 	
+	FileChooser files;
+	
 	ListView<Track> playlistView;
 	Button skipButton;
 	Button zuruckButton;
+	Button filechooser;
 	
 	MP3Player player;
 	
@@ -35,10 +41,14 @@ public class PlaylistViewController {
 		this.player = player;
 		this.application = application;
 		
+		files = new FileChooser();
+		files.setInitialDirectory(new File("c.\\"));
+		
 		PlaylistView view = new PlaylistView();
 		playlistView = view.playlistView;
 		skipButton = view.skipButton;
 		zuruckButton = view.zuruckButton;
+		filechooser = view.filechooser;
 		
 		root = view;
 		
@@ -77,6 +87,8 @@ public class PlaylistViewController {
 				
 				if(!player.playing) {
 					player.play();
+				}else{
+					player.pause();
 				}
 				
 			}
@@ -135,6 +147,17 @@ public class PlaylistViewController {
 			});
 			
 			//deleteThread.start();
+		
+		filechooser.addEventHandler(ActionEvent.ACTION,
+				event -> {
+//					File newfile = files.showOpenDialog();
+//					
+//					if(newfile != null) {
+//						System.out.println(newfile.getAbsolutePath());
+//					}
+					System.out.println("Hallo Palestine");
+				});
+		
 		
 	}
 

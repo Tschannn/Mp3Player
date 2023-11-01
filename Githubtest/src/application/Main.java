@@ -24,8 +24,7 @@ import javafx.scene.layout.VBox;
  * - Eigene Screens als View-Komponenten definieren
  * - Einfache Verwaltung der Views ueber einen Katalog (als Map)
  * - Layout & Styling als CCS-Definition
- * 
- * @author berdux
+ *
  *
  */
 public class Main extends Application {
@@ -37,7 +36,7 @@ public class Main extends Application {
 	
 	private MP3Player player;
 	
-	@Override
+
 	public void init() {
 		
 		/* in der Anwednung gibt es einen Player, der dann von allen
@@ -46,7 +45,7 @@ public class Main extends Application {
 		player = new MP3Player();
 	}
 	
-	@Override
+
 	public void start(Stage primaryStage) {
 		try {
 			scenes = new HashMap<String, Pane>();

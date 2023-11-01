@@ -5,6 +5,7 @@ import business.Track;
 import de.hsrm.mi.eibo.simpleplayer.SimpleAudioPlayer;
 import de.hsrm.mi.eibo.simpleplayer.SimpleMinim;
 import de.hsrm.mi.prog.util.StaticScanner;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class MP3Player {
@@ -15,7 +16,8 @@ public class MP3Player {
 	private SimpleMinim minim;
 	SimpleAudioPlayer audioPlayer;
 	public boolean playing;
-	private SimpleIntegerProperty currentTime;
+	private SimpleDoubleProperty currentTime;
+	private double endTime;
 
 	
 	public MP3Player() {
@@ -24,7 +26,8 @@ public class MP3Player {
 
 		this.minim = new SimpleMinim(true);
 		aktuellerSong = playlist.get();
-		currentTime = new SimpleIntegerProperty();
+		currentTime = new SimpleDoubleProperty();
+		endTime = aktuellerSong.getLaenge();
 
 	}
 
@@ -39,7 +42,7 @@ public class MP3Player {
 				playing = true;
 				while(true) {
 					System.out.println(currentTime.get());
-					currentTime.setValue(currentTime.getValue() + 1);
+					currentTime.setValue(currentTime.getValue() + 1.0);
 					
 					try {
 						Thread.sleep(1000);
@@ -95,11 +98,15 @@ public class MP3Player {
 		System.out.printf("volume: %1.2f %n", d);
 	}
 
-	public SimpleIntegerProperty currentTimeProperty() {
+	public SimpleDoubleProperty currentTimeProperty() {
 		return currentTime;
 	}
 	
-	public float getCurrentTime() {
-		return currentTime.get();
+	public double getCurrentTime() {
+		return  currentTime.get();
+	}
+	
+	public double getEndTime() {
+		return endTime;
 	}
 }

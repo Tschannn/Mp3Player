@@ -10,6 +10,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
+
 /**
  * PlaylistView soll dann irgrnedwann mal die aktuelle Playlist anzeigen.
  * 
@@ -22,6 +23,7 @@ public class PlaylistView extends BorderPane {
 	Label headerLabel;
 	Button skipButton;
 	Button zuruckButton;
+	Button filechooser;
 	ListView<Track> playlistView;
 
 	public PlaylistView() {
@@ -36,6 +38,8 @@ public class PlaylistView extends BorderPane {
 		zuruckButton = new Button("Player");
 
 		skipButton = new Button(">");
+		
+		filechooser = new Button("Select a new Song");
 
 		BorderPane.setAlignment(headerLabel, Pos.CENTER);
 		BorderPane.setMargin(headerLabel, new Insets(10));
@@ -48,7 +52,8 @@ public class PlaylistView extends BorderPane {
 
 		skipButton.getStyleClass().add("control-button");
 		zuruckButton.getStyleClass().add("control-button");
-		controll.getChildren().addAll(zuruckButton,skipButton);
+		filechooser.getStyleClass().add("control-button"); 
+		controll.getChildren().addAll(filechooser,zuruckButton,skipButton);
 
 		controll.setSpacing(10);
 		controll.setId("controller");

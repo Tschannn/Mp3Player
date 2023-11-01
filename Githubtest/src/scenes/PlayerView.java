@@ -41,6 +41,7 @@ public class PlayerView extends BorderPane {
 	Button backwardButton;
 	Slider timeSlider;
 	Label timeLabel;
+	Label endTimeLabel;
 	
 	
 	
@@ -80,17 +81,20 @@ public class PlayerView extends BorderPane {
 		
 		VBox bottomPane = new VBox();
 		HBox timeLine = new HBox();
-		timeSlider = new Slider();
 		timeLabel = new Label("0:00");
-		timeLine.getChildren().addAll(timeSlider, timeLabel);
+		timeSlider = new Slider();
+		endTimeLabel = new Label("0:00");
+		timeLine.getChildren().addAll(timeLabel,timeSlider,endTimeLabel);
 		timeLine.setSpacing(10);
 		timeLine.setPadding(new Insets(10));
 		HBox.setHgrow(timeSlider, Priority.ALWAYS);
 		
 		HBox controller = new HBox();
-		slider = new Slider(0,100,50);
+		slider = new Slider(0, 100, 0.50);
 		slider.setShowTickMarks(true);
         slider.setShowTickLabels(true);
+        slider.setMax(1);
+        slider.setMin(0);
 		switchButton = new Button("Playlist");
 		playButton = new Button("۶");
 		pauseButton = new Button("١");

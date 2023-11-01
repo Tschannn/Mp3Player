@@ -21,6 +21,7 @@ public class PlayerViewController {
 	Label albumLabel;
 	Label titleLabel;
 	Label timeLabel;
+	Label endTimeLabel;
 	Slider slider;
 	Slider timeSlider;
 	Button playButton;
@@ -76,7 +77,9 @@ public class PlayerViewController {
 		backwardButton = mainView.backwardButton;
 		slider = mainView.slider;
 		timeLabel = mainView.timeLabel;
+		endTimeLabel = mainView.endTimeLabel;
 		timeSlider = mainView.timeSlider;
+
 		akt = player.aktuellerSong;
 		
 		
@@ -121,8 +124,13 @@ public class PlayerViewController {
 			
 				if(!player.playing) {
 					player.play();
+//					Platform.runLater(() -> {
+//						endTimeLabel.setText(akt.getLaenge());
+//						endTimeLabel.valueProperty().set(akt.doubleValue());
+//					});
 				}else {
 					player.pause();
+				
 				}
 				
 			
@@ -194,11 +202,13 @@ public class PlayerViewController {
 
 		@Override
 		public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-			//System.out.println(newValue.doubleValue());
+			player.currentTimeProperty();
 			
 		}
 		
 	});
+	
+	
 	
 	player.currentTimeProperty().addListener(new ChangeListener<Number>() {
 
