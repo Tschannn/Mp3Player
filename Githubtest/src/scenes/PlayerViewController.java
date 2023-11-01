@@ -111,12 +111,7 @@ public class PlayerViewController {
 		 * eigenem Zustand isPlaying.
 		 */
 		
-		/*titleLabel.addEventFilter(ActionEvent.ACTION,
-				event -> {
-					titleLabel.setText(akt.getTitle());
-				}
-				);
-		*/
+		
 		playButton.addEventHandler(ActionEvent.ACTION,
 			event ->{
 
@@ -133,16 +128,13 @@ public class PlayerViewController {
 				
 				}
 				
-			
-		
-			titleLabel = new Label(akt.getTitle());
-				titleLabel.setText(akt.getTitle());
 				
-			albumLabel = new Label(akt.getArtist());
+		
 				
 				System.out.println(titleLabel.getText());
 				System.out.println(albumLabel.getText());
-			Platform.runLater(() -> titleLabel.setText(akt.getFileName()));	
+				
+				
 
 			});
 		
