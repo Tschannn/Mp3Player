@@ -82,11 +82,13 @@ public class PlaylistViewController {
 			public void changed(ObservableValue<? extends Track> observable, Track oldTrack, Track newTrack) {
 				System.out.println(newTrack);
 				
-			//	player.setSong(newTrack);
+				player.setSong(newTrack);
 				
 				
 				if(!player.playing) {
 					player.play();
+					System.out.println(newTrack.getArtist());
+					System.out.println(newTrack.getTitle());
 				}else{
 					player.pause();
 				}
@@ -132,7 +134,7 @@ public class PlaylistViewController {
 		);
 
 		
-		// nur als Demo, um zu zeigen was passiert, wenn Zellen nicht jedesmal vollstaendig initialisiert werden 
+	/*	// nur als Demo, um zu zeigen was passiert, wenn Zellen nicht jedesmal vollstaendig initialisiert werden 
 		// siehe Caching von Zellen
 		Thread deleteThread = new Thread(() -> {
 			  while(playlistModel.size() > 5) {
@@ -146,7 +148,7 @@ public class PlaylistViewController {
 			  }
 			});
 			
-			//deleteThread.start();
+			//deleteThread.start();*/
 		
 		filechooser.addEventHandler(ActionEvent.ACTION,
 				event -> {

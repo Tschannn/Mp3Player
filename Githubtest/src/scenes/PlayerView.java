@@ -84,6 +84,7 @@ public class PlayerView extends BorderPane {
 		timeLabel = new Label("0:00");
 		timeSlider = new Slider();
 		endTimeLabel = new Label("0:00");
+		timeSlider.getStyleClass().add("time-slider");
 		timeLine.getChildren().addAll(timeLabel,timeSlider,endTimeLabel);
 		timeLine.setSpacing(10);
 		timeLine.setPadding(new Insets(10));
@@ -100,7 +101,7 @@ public class PlayerView extends BorderPane {
 		pauseButton = new Button("١");
 		fowardButton = new Button("٨");
 		backwardButton = new Button("٧");
-		switchButton.getStyleClass().add("control-button");
+		switchButton.getStyleClass().add("playlist-button");
 		playButton.getStyleClass().add("control-button");
 		pauseButton.getStyleClass().add("control-button");
 		fowardButton.getStyleClass().add("control-button");

@@ -34,6 +34,8 @@ public class PlaylistView extends BorderPane {
 		playlistView = new ListView<>();
 		this.setCenter(playlistView);
 		playlistView.setId("table");
+		//playlistView.getStyleClass().add("table");
+		
 
 		zuruckButton = new Button("Player");
 

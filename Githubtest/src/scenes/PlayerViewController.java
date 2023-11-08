@@ -129,10 +129,10 @@ public class PlayerViewController {
 				}
 				
 				
+				
 		
 				
-				System.out.println(titleLabel.getText());
-				System.out.println(albumLabel.getText());
+//				System.out.println(titleLabel.toString());
 				
 				
 

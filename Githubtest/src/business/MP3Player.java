@@ -11,7 +11,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 public class MP3Player {
 	
 	Playlist playlist;
-	//public Song aktuellerSong;
 	public Track aktuellerSong;
 	private SimpleMinim minim;
 	SimpleAudioPlayer audioPlayer;
@@ -40,23 +39,24 @@ public class MP3Player {
 				audioPlayer = minim.loadMP3File(aktuellerSong.getPath());
 				audioPlayer.play();
 				playing = true;
-				while(true) {
+		
+				while(playing = true) {
 					System.out.println(currentTime.get());
 					currentTime.setValue(currentTime.getValue() + 1.0);
 					
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
+					}
+					if(playing = false) {
+						break;
 					}
 				}
 			}
 		}.start();
-		/*audioPlayer = minim.loadMP3File(aktuellerSong.getPath());
-		audioPlayer.play();
-		playing = true;
-		*/
+		
 	}
 	
 	public void setSong(Track neuerSong) {
@@ -67,14 +67,16 @@ public class MP3Player {
 		
 		audioPlayer.pause();
 		
-		//System.out.println("pause");
+		playing = false;
+		
+		System.out.println("pause");
 	}
 	
 	public void resume(){
 		if (audioPlayer.isPlaying()) {
 		  } else {
 		    audioPlayer.play();
-		   // System.out.println("resume");
+		    System.out.println("resume");
 		  }
 	}
 
