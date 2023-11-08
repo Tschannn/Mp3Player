@@ -83,6 +83,8 @@ public class PlayerViewController {
 		akt = player.aktuellerSong;
 		
 		
+		
+		
 		// Root-View zu haben ist immer eine gute Idee
 		root = mainView;
 
