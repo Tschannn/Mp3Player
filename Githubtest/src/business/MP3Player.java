@@ -54,8 +54,6 @@ public class MP3Player {
 						break;
 					}
 				}
-				
-				
 			}
 		}.start();
 		
