@@ -130,14 +130,7 @@ public class PlayerViewController {
 				
 				}
 				
-				
-				
-		
-				
 //				System.out.println(titleLabel.toString());
-				
-				
-
 			});
 		
 		pauseButton.addEventFilter(ActionEvent.ACTION,
@@ -171,26 +164,9 @@ public class PlayerViewController {
 	            float volume = newValue.floatValue();
 	            player.volume(volume);
 	            System.out.println(volume);
-	            System.out.println("Angelos Angelakis");
+	           // System.out.println("Angelos Angelakis");
 	        });
-		  
-			/*slider.valueProperty().addListener((ChangeListener<? super Number>) new ChangeListener<Number>() {
-				public void changed1(ObservableValue<? extends Number> oV, Number oldValue, Number newValue) {
-					double volume;
-					volume = newValue.doubleValue() / 100;
-					player.volume((float) volume);
-				}
-
-				@Override
-				public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
-					// TODO Auto-generated method stub
-
-				}
-			});
-		*/
 		
-		
-	
 	
 	timeSlider.valueProperty().addListener(new ChangeListener<Number>() {
 

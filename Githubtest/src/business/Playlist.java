@@ -7,14 +7,14 @@ import java.util.Scanner;
 
 public class Playlist{
 	
-	private ArrayList<Track> tracklist = new ArrayList<Track>();
+	public ArrayList<Track> tracklist = new ArrayList<Track>();
 
 	private int aktuell;
 	
 	File myObj = new File("Playlist.m3u");
 	
 	
-	
+	/*GET PREV AND GET NEXT IN MP3Player*/
 
 	public Playlist() {
 		this.aktuell = 0;
@@ -41,7 +41,7 @@ public class Playlist{
 		
 	}
 	
-	public Track getNext() {
+	/*public Track getNext() {
 		return get(++aktuell % tracklist.size());
 	}
 	
@@ -53,7 +53,7 @@ public class Playlist{
 	        }
 
 	        return get(aktuell);
-	}
+	}*/
 	
 	public Track get(int num) {
 		return tracklist.get(num);

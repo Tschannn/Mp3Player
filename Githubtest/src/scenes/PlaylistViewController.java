@@ -2,11 +2,12 @@ package scenes;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import application.Main;
 import business.MP3Player;
+import business.Playlist;
 import business.Track;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -36,10 +37,13 @@ public class PlaylistViewController {
 	Button filechooser;
 	
 	MP3Player player;
+	Playlist playlist;
 	
-	public PlaylistViewController(Main application,MP3Player player) {
+	public PlaylistViewController(Main application,MP3Player player,Playlist playlist) {
 		this.player = player;
 		this.application = application;
+		this.playlist = playlist;
+		System.out.println();
 		
 		files = new FileChooser();
 		files.setInitialDirectory(new File("c.\\"));
@@ -57,15 +61,8 @@ public class PlaylistViewController {
 	
 	public void initialize() {
 		// Dummy-Daten, die eigentlich vom Playlistmanegr kommen
-		List<Track> trackList = new LinkedList<Track>();
-		
-		trackList.add(new Track("Don't", "Bryson Tiller"));
-		trackList.add(new Track("What Is Love ", "Mike O'hearn"));
-		trackList.add(new Track("Bring Mich Nach Hause", "Die Toten Hosen"));
-		trackList.add(new Track("Drei Worte", "Die Toten Hosen"));
-		
-		
-		
+		ArrayList<Track> trackList = new ArrayList<Track>();
+		trackList= playlist.tracklist;		
 		
 		// angeben, wie eine Zelle aufgebaut wird
 		playlistView.setCellFactory(new Callback<ListView<Track>, ListCell<Track>>() {
@@ -80,17 +77,21 @@ public class PlaylistViewController {
 
 			@Override
 			public void changed(ObservableValue<? extends Track> observable, Track oldTrack, Track newTrack) {
+
 				System.out.println(newTrack);
 				
+			
 				player.setSong(newTrack);
 				
 				
-				if(!player.playing) {
-					player.play();
+				if(player.playing) {
+					player.pause();
 					System.out.println(newTrack.getArtist());
 					System.out.println(newTrack.getTitle());
+					
+					player.play();
 				}else{
-					player.pause();
+					player.play();
 				}
 				
 			}
@@ -116,14 +117,10 @@ public class PlaylistViewController {
 				index = (index + 1) % playlistModel.size();
 				player.pause();
 				player.skip();
+				player.play();
 			}
 			
 		});
-		/*
-		@FXML
-		public void zuruckAction() {
-			application.switchScene("Player");
-		}*/
 		
 		playlistView.setId("table");
 		

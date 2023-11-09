@@ -74,6 +74,7 @@ public class PlayerView extends BorderPane {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//coverView.getStyleClass().add("");
 		
 		// ImageView wird in den ImageViewPane eingehuellt, damit es dann mitskaliert
 		ImageViewPane pane = new ImageViewPane(coverView);
@@ -97,7 +98,7 @@ public class PlayerView extends BorderPane {
         slider.setMax(1);
         slider.setMin(0);
 		switchButton = new Button("Playlist");
-		playButton = new Button("۶");
+		playButton = new Button("");
 		pauseButton = new Button("١");
 		fowardButton = new Button("٨");
 		backwardButton = new Button("٧");

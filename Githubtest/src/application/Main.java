@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import business.MP3Player;
+import business.Playlist;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import scenes.PlayerView;
@@ -35,6 +36,7 @@ public class Main extends Application {
 	private Map<String, Pane> scenes;
 	
 	private MP3Player player;
+	private Playlist playlist;
 	
 
 	public void init() {
@@ -43,6 +45,7 @@ public class Main extends Application {
 		 * Seiten/Views bzw. deren Controllern aus erreichbar ist
 		 */
 		player = new MP3Player();
+		playlist = new Playlist();
 	}
 	
 
@@ -54,7 +57,7 @@ public class Main extends Application {
 			PlayerViewController playerViewController = new PlayerViewController(this, player);
 			scenes.put("PlayerView", playerViewController.getRoot());
 			
-			PlaylistViewController playlistController = new PlaylistViewController(this,player);
+			PlaylistViewController playlistController = new PlaylistViewController(this,player,playlist);
 
 			scenes.put("PlaylistView", playlistController.getRoot());
 			

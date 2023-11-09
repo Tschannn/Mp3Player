@@ -60,12 +60,12 @@ public class Track {
 		this.fileName = fileName;
 	}
 	
-	public Track(String title, String artist) {
+	/*public Track(String title, String artist) {
 		super();
 		this.title = title;
 		this.artist = artist;
 		this.fileName = null;
-	}
+	}*/
 
 	public String getTitle() {
 		return title;
