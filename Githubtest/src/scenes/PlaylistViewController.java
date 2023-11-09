@@ -32,7 +32,6 @@ public class PlaylistViewController {
 	FileChooser files;
 	
 	ListView<Track> playlistView;
-	Button skipButton;
 	Button zuruckButton;
 	Button filechooser;
 	
@@ -50,7 +49,6 @@ public class PlaylistViewController {
 		
 		PlaylistView view = new PlaylistView();
 		playlistView = view.playlistView;
-		skipButton = view.skipButton;
 		zuruckButton = view.zuruckButton;
 		filechooser = view.filechooser;
 		
@@ -103,24 +101,6 @@ public class PlaylistViewController {
 		ObservableList<Track> playlistModel = playlistView.getItems();
 		playlistModel.addAll(trackList);
 		
-		
-		// skip in der ListView
-		skipButton.setOnAction(new EventHandler<ActionEvent>() {
-
-			int index = 0;
-			@Override
-			public void handle(ActionEvent event) {
-				if (index < playlistModel.size()) {
-					playlistView.getSelectionModel().select(index);
-				}
-				
-				index = (index + 1) % playlistModel.size();
-				player.pause();
-				player.skip();
-				player.play();
-			}
-			
-		});
 		
 		playlistView.setId("table");
 		

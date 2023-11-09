@@ -64,7 +64,7 @@ public class Main extends Application {
 			// Beispielhaft nehmen wir uns aus der Verwaltung jetzt einfach mal den Start-Screen raus
 			Pane root = scenes.get("PlayerView");
 			
-			Scene scene = new Scene(root,400,400);
+			Scene scene = new Scene(root,500,500);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			
 			/* das Hauptfenster sich zu merken ist eine gute Idee,

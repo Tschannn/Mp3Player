@@ -1,5 +1,7 @@
 package business;
 
+import java.util.Collections;
+
 import business.Playlist;
 import business.Track;
 import de.hsrm.mi.eibo.simpleplayer.SimpleAudioPlayer;
@@ -82,12 +84,22 @@ public class MP3Player {
 		}
 	}
 
+	public void loop() {
+		audioPlayer.loop();
+	}
+
+	public Track shuffle() {
+
+		Collections.shuffle(playlist.tracklist);
+
+		return playlist.get((int) (playlist.tracklist.size() * Math.random()));
+	}
+
 	public Track skip() {
 		pause();
 
 		aktuellerSong = playlist.get(++aktuell % playlist.tracklist.size());
 		play();
-		// System.out.println("skip");
 		return aktuellerSong;
 	}
 
