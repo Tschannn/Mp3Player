@@ -33,7 +33,7 @@ public class PlayerView extends BorderPane {
 	 */
 	Label titleLabel;
 	Label albumLabel;
-	Slider slider;
+	Slider volSlider;
 	Button playButton;
 	Button switchButton;
 	Button pauseButton;
@@ -128,11 +128,11 @@ public class PlayerView extends BorderPane {
 		HBox.setHgrow(timeSlider, Priority.ALWAYS);
 		
 		HBox controller = new HBox();
-		slider = new Slider(0, 100, 0.50);
-		slider.setShowTickMarks(true);
-        slider.setShowTickLabels(true);
-        slider.setMax(1);
-        slider.setMin(0);
+		volSlider = new Slider(0, 100, 0.50);
+        volSlider.setShowTickLabels(true);
+        volSlider.setMax(1);
+        volSlider.setMin(0);
+        volSlider.getStyleClass().add("volSlider");
 		switchButton = new Button();
 		switchButton.setGraphic(playlistbbutton1);
 		playButton = new Button();
@@ -154,7 +154,7 @@ public class PlayerView extends BorderPane {
 		backwardButton.getStyleClass().add("control-button");
 		loopButton.getStyleClass().add("control-button");
 		shuffleButton.getStyleClass().add("control-button");
-		controller.getChildren().addAll(switchButton,backwardButton,playButton,pauseButton,fowardButton,loopButton,shuffleButton,slider);
+		controller.getChildren().addAll(switchButton,backwardButton,playButton,pauseButton,fowardButton,loopButton,shuffleButton,volSlider);
 		controller.setSpacing(10);
 		controller.setId("controller");
 		

@@ -22,7 +22,7 @@ public class PlayerViewController {
 	Label titleLabel;
 	Label timeLabel;
 	Label endTimeLabel;
-	Slider slider;
+	Slider volSlider;
 	Slider timeSlider;
 	Button playButton;
 	Button switchButton;
@@ -78,7 +78,7 @@ public class PlayerViewController {
 		backwardButton = mainView.backwardButton;
 		loopButton = mainView.loopButton;
 		shuffleButton = mainView.shuffleButton;
-		slider = mainView.slider;
+		volSlider = mainView.volSlider;
 		timeLabel = mainView.timeLabel;
 		endTimeLabel = mainView.endTimeLabel;
 		timeSlider = mainView.timeSlider;
@@ -139,13 +139,13 @@ public class PlayerViewController {
 		}
 
 		);
-		
+
 		loopButton.addEventFilter(ActionEvent.ACTION, event -> {
 			player.loop();
 		}
 
 		);
-		
+
 		shuffleButton.addEventFilter(ActionEvent.ACTION, event -> {
 			player.shuffle();
 		}
@@ -155,13 +155,18 @@ public class PlayerViewController {
 		switchButton.addEventHandler(ActionEvent.ACTION, event -> {
 			application.switchScene("PlaylistView");
 		});
-		
 
-		slider.valueProperty().addListener((observable, oldValue, newValue) -> {
+		/*volSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
 			float volume = newValue.floatValue();
 			player.volume(volume);
-			System.out.println(volume);
-			// System.out.println("Angelos Angelakis");
+		});
+*/
+		volSlider.valueProperty().addListener(new ChangeListener<Number>() {
+			public void changed(ObservableValue<? extends Number> oV, Number oldValue, Number newValue) {
+				float volume = newValue.floatValue();
+				player.volume(volume);
+//				System.out.println("Angelos Angelakis");
+			}
 		});
 
 		timeSlider.valueProperty().addListener(new ChangeListener<Number>() {

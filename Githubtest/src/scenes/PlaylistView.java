@@ -29,7 +29,8 @@ public class PlaylistView extends BorderPane {
 
 	public PlaylistView() {
 		HBox controll = new HBox();
-		headerLabel = new Label("Playlist View");
+		headerLabel = new Label("PLAYLIST");
+		headerLabel.setId("headerLabel");
 		this.setTop(headerLabel);
 
 		playlistView = new ListView<>();
