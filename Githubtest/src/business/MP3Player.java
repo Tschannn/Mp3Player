@@ -23,6 +23,7 @@ public class MP3Player {
 	private SimpleObjectProperty<Track> tracks;
 	private int aktuell;
 	private Thread playThread;
+	private Thread endThread;
 	private SimpleIntegerProperty trackIndex;
 
 	public MP3Player() {
@@ -76,23 +77,22 @@ public class MP3Player {
 	}
 
 	public void pause() {
-		try {
-		audioPlayer.pause();
-
-		playing = false;
-
-		System.out.println("pause");
-
-		}catch (NullPointerException e) {
-			System.err.println("Sie haben kein Song zum pausieren");
-		}
+		if (audioPlayer != null && audioPlayer.isPlaying()) {
+	        audioPlayer.pause();
+	        playing = false;
+	        System.out.println("pause");
+	    } else {
+	        System.err.println("Sie haben keinen Song zum Pausieren oder der Song ist bereits pausiert.");
+	    }
 	}
 	public void resume() {
-		if (audioPlayer.isPlaying()) {
-		} else {
-			audioPlayer.play();
-			System.out.println("resume");
-		}
+		  if (audioPlayer != null && !audioPlayer.isPlaying()) {
+		        audioPlayer.play();
+		        playing = true;		        
+		        System.out.println("resume");
+		    } else {
+		        System.err.println("Sie haben keinen pausierten Song zum Fortsetzen oder der Song wird bereits abgespielt.");
+		    }
 	}
 
 	public void loop() {

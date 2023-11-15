@@ -121,7 +121,7 @@ public class PlaylistViewController {
 					
 					JFileChooser fileChooser = new JFileChooser();
 					
-					fileChooser.setCurrentDirectory(new File("C:\\Users\\Berha\\Downloads\\Musik"));
+					fileChooser.setCurrentDirectory(new File(".//Songs//"));
 					fileChooser.setFileFilter(new FileNameExtensionFilter(".mp3", "mp3"));
 					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 					

@@ -201,7 +201,6 @@ public class PlayerViewController {
 		player.endTimeProperty().addListener((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 endTimeLabel.setText("-" + MP3Player.formatTime(newValue.intValue()));
-                System.out.println("was geht Bro" + endTimeLabel);
             });
         });
 
