@@ -1,5 +1,7 @@
 package scenes;
 
+import java.io.ByteArrayInputStream;
+
 import application.Main;
 import business.MP3Player;
 import business.Track;
@@ -11,8 +13,11 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 
 public class PlayerViewController {
 	private Main application;
@@ -31,6 +36,8 @@ public class PlayerViewController {
 	Button backwardButton;
 	Button loopButton;
 	Button shuffleButton;
+	
+	ImageView coverView;
 
 	MP3Player player;
 	Track akt;
@@ -43,7 +50,7 @@ public class PlayerViewController {
 	 * Zusaetzlich waere hier dann ein Zusatnd vorgesehen, um zwischen Play und
 	 * Pause hin und her zu wechseln. Nachtuerlich wurde man hier dann auch das Icon
 	 * des Button wechseln, am besten ueber eas Setzen eines Style-Attributs.
-	 */
+	 
 	private class PlayEventHandler implements EventHandler<ActionEvent> {
 
 		boolean isPlaying;
@@ -60,7 +67,7 @@ public class PlayerViewController {
 		}
 
 	}
-
+*/
 	public PlayerViewController(Main application, MP3Player player) {
 		this.application = application;
 		this.player = player;
@@ -82,6 +89,7 @@ public class PlayerViewController {
 		timeLabel = mainView.timeLabel;
 		endTimeLabel = mainView.endTimeLabel;
 		timeSlider = mainView.timeSlider;
+		coverView = mainView.coverView;
 
 		akt = player.aktuellerSong;
 
@@ -96,17 +104,14 @@ public class PlayerViewController {
 	}
 
 	public void initialize() {
+		
+		timeLabel.setText(MP3Player.formatTime(0));
+        endTimeLabel.setText("-" + MP3Player.formatTime(player.aktuellerSong.getDuration()));
+        
+        setImage();
+        setSongInfo();
 
-		/*
-		 * Beispiel wie dann ein Listener als Member-Klasse bei einem Button angemeldet
-		 * wird
-		 */
-		// playButton.addEventHandler(ActionEvent.ACTION, new PlayEventHandler());
-
-		/*
-		 * Beispiel eine Listneres als anonyme Klasse mit eigenem Zustand isPlaying.
-		 */
-
+		
 		playButton.addEventHandler(ActionEvent.ACTION, event -> {
 
 			if (!player.playing) {
@@ -115,6 +120,7 @@ public class PlayerViewController {
 //						endTimeLabel.setText(akt.getLaenge());
 //						endTimeLabel.valueProperty().set(akt.doubleValue());
 //					});
+				
 			} else {
 				player.resume();
 
@@ -156,11 +162,7 @@ public class PlayerViewController {
 			application.switchScene("PlaylistView");
 		});
 
-		/*volSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-			float volume = newValue.floatValue();
-			player.volume(volume);
-		});
-*/
+		
 		volSlider.valueProperty().addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> oV, Number oldValue, Number newValue) {
 				float volume = newValue.floatValue();
@@ -181,17 +183,54 @@ public class PlayerViewController {
 
 		player.currentTimeProperty().addListener(new ChangeListener<Number>() {
 
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				Platform.runLater(() -> {
-					timeLabel.setText(newValue.toString());
-					timeSlider.valueProperty().set(newValue.doubleValue());
-				});
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                Platform.runLater(() -> {
+                    timeLabel.setText(MP3Player.formatTime(newValue.intValue()));
+                    Duration currentTime = Duration.millis(newValue.intValue());
+                    timeSlider.setValue(currentTime.toSeconds());
+                    String sekunden = MP3Player.formatTime((int) (player.aktuellerSong.getDuration() - newValue.intValue()));
+                    endTimeLabel.setText(sekunden);
+                    
+                });
 
-			}
+            }
 
-		});
-	}
+        });
+	
+		player.endTimeProperty().addListener((observable, oldValue, newValue) -> {
+            Platform.runLater(() -> {
+                endTimeLabel.setText("-" + MP3Player.formatTime(newValue.intValue()));
+                System.out.println("was geht Bro" + endTimeLabel);
+            });
+        });
+
+
+        timeSlider.valueProperty().addListener(new ChangeListener<Number>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                player.currentTimeProperty();
+
+            }
+
+        });
+}
+	
+
+	
+	public void setImage() {
+        try {
+            coverView.setImage(new Image (new ByteArrayInputStream(player.aktuellerSong.getAlbumImage()))); 
+        } catch (NullPointerException e){
+            e.printStackTrace();
+
+        }
+    }
+    public void setSongInfo() {
+        titleLabel.setText(player.aktuellerSong.getTitle());
+        albumLabel.setText(player.aktuellerSong.getArtist()); 
+    }
 
 	public Pane getRoot() {
 		return root;

@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import application.Main;
 import business.MP3Player;
 import business.Playlist;
@@ -29,7 +32,7 @@ public class PlaylistViewController {
 	Main application;
 	Pane root;
 	
-	FileChooser files;
+	
 	
 	ListView<Track> playlistView;
 	Button zuruckButton;
@@ -44,8 +47,8 @@ public class PlaylistViewController {
 		this.playlist = playlist;
 		System.out.println();
 		
-		files = new FileChooser();
-		files.setInitialDirectory(new File("c.\\"));
+//		files = new FileChooser();
+//		files.setInitialDirectory(new File("file:///C:/Users/Berha/Downloads"));
 		
 		PlaylistView view = new PlaylistView();
 		playlistView = view.playlistView;
@@ -111,31 +114,36 @@ public class PlaylistViewController {
 		);
 
 		
-	/*	// nur als Demo, um zu zeigen was passiert, wenn Zellen nicht jedesmal vollstaendig initialisiert werden 
-		// siehe Caching von Zellen
-		Thread deleteThread = new Thread(() -> {
-			  while(playlistModel.size() > 5) {
-				  try {
-					Platform.runLater(() -> playlistModel.remove(0));
-					Thread.sleep(500);
-				  } catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				  }
-			  }
-			});
-			
-			//deleteThread.start();*/
+	
 		
 		filechooser.addEventHandler(ActionEvent.ACTION,
 				event -> {
-//					File newfile = files.showOpenDialog();
-//					
-//					if(newfile != null) {
-//						System.out.println(newfile.getAbsolutePath());
-//					}
-					System.out.println("Hallo Palestine");
+					
+					JFileChooser fileChooser = new JFileChooser();
+					
+					fileChooser.setCurrentDirectory(new File("C:\\Users\\Berha\\Downloads\\Musik"));
+					fileChooser.setFileFilter(new FileNameExtensionFilter(".mp3", "mp3"));
+					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+					
+					int response = fileChooser.showSaveDialog(null);	//select file to save
+
+					
+					if(response == JFileChooser.APPROVE_OPTION) {
+						System.out.println(playlist.tracklist);
+						File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+						System.out.println(file);
+						playlist.tracklist.add(new Track(file.getAbsolutePath()));
+						System.out.println(playlist.tracklist);
+						changedSong();
+					}
+					
+				//	System.out.println("Hallo Palestine");
 				});
+		
+	}
+		public void changedSong() {
+			ObservableList<Track> playlistModel = playlistView.getItems();
+			playlistModel.setAll(playlist.tracklist);
 		
 		
 	}

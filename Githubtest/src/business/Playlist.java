@@ -11,10 +11,10 @@ public class Playlist{
 
 	private int aktuell;
 	
+//	PlaylistManager playlistMan = new PlaylistManager();
+	
 	File myObj = new File("Playlist.m3u");
 	
-	
-	/*GET PREV AND GET NEXT IN MP3Player*/
 
 	public Playlist() {
 		this.aktuell = 0;

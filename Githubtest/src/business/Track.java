@@ -18,30 +18,32 @@ public class Track {
 	private String artist;
 	private String fileName;
 	private double laenge;
+	private int duration;
 	Mp3File mp3file = null;
 	ID3v2 meta;
-	
+	byte[] albumImage;
+
 	/**
 	 * Initialisierungskonstruktor
 	 * 
-	 * @param title Titel des Songs
-	 * @param artist Interpret des Songs
+	 * @param title    Titel des Songs
+	 * @param artist   Interpret des Songs
 	 * @param fileName Datei-Name der MP3-Datei
 	 * 
 	 */
-	
+
 	public Track(String path) {
 		try {
 			mp3file = new Mp3File(path);
 			meta = mp3file.getId3v2Tag();
-			
+
 			this.fileName = path;
 			this.title = meta.getTitle();
 			this.artist = meta.getArtist();
-			this.laenge = meta.getDataLength();
+			this.laenge = meta.getLength();
+			this.albumImage = meta.getAlbumImage();
+			this.duration = (int) mp3file.getLengthInSeconds() * 1000;
 
-			
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (UnsupportedTagException e) {
@@ -52,20 +54,35 @@ public class Track {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public Track(String title, String artist, String fileName) {
 		super();
 		this.title = title;
 		this.artist = artist;
 		this.fileName = fileName;
 	}
-	
-	/*public Track(String title, String artist) {
-		super();
-		this.title = title;
-		this.artist = artist;
-		this.fileName = null;
-	}*/
+
+	/*
+	 * public Track(String title, String artist) { super(); this.title = title;
+	 * this.artist = artist; this.fileName = null; }
+	 */
+
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+
+	public byte[] getAlbumImage() {
+		
+		return albumImage;
+	}
+
+	public void setAlbumImage(byte[] albumImage) throws InvalidDataException {
+		this.albumImage = albumImage;
+	}
 
 	public String getTitle() {
 		return title;
@@ -78,7 +95,7 @@ public class Track {
 	public String getFileName() {
 		return fileName;
 	}
-	
+
 	public String toString() {
 		return title + " - " + artist;
 	}
@@ -87,10 +104,9 @@ public class Track {
 		// TODO Auto-generated method stub
 		return fileName;
 	}
-	
+
 	public double getLaenge() {
 		return laenge;
 	}
 
 }
-

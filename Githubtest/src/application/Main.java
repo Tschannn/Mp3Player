@@ -6,6 +6,7 @@ import java.util.Map;
 import business.MP3Player;
 import business.Playlist;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import scenes.PlayerView;
 import scenes.PlaylistView;
@@ -57,7 +58,7 @@ public class Main extends Application {
 			PlayerViewController playerViewController = new PlayerViewController(this, player);
 			scenes.put("PlayerView", playerViewController.getRoot());
 			
-			PlaylistViewController playlistController = new PlaylistViewController(this,player,playlist);
+			PlaylistViewController playlistController = new PlaylistViewController(this,player,player.getPlaylist());
 
 			scenes.put("PlaylistView", playlistController.getRoot());
 			
@@ -74,9 +75,17 @@ public class Main extends Application {
 			primaryStage.getIcons().add(new Image("file:///C:/Users/Berha/eclipse-workspace/Mp3player_neu3/obamna.png"));
 			primaryStage.setScene(scene);
 			primaryStage.show();
+			
+			primaryStage.setOnCloseRequest(e -> {
+		        Platform.exit();
+		        System.out.println("MP3Player closed");
+		        System.exit(0);
+		    });
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		
+		
 	}
 	
 	/**
@@ -92,6 +101,8 @@ public class Main extends Application {
 			primaryStage.getScene().setRoot(scenes.get(scene));
 		}
 	}
+	
+	
 	
 	public static void main(String[] args) {
 		launch(args);
