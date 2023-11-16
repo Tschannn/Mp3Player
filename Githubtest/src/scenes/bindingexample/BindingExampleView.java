@@ -7,14 +7,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 
-/**
- * PlaylistView soll dann irgrnedwann mal die aktuelle Playlist anzeigen.
- * 
- * Hier jetzt einfach mal als zweite Dummy-Szene definiert.
- * 
- * @author berdux
- *
- */
 public class BindingExampleView extends BorderPane {
 	Label headerLabel;
 	Label textExample;

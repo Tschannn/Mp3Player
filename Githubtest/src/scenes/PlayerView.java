@@ -23,14 +23,10 @@ import presentation.uicomponents.ImageViewPane;
  * - Anzeige des aktuellen Songs - Zeitangabe des Songs - Bedeinelemente des
  * Players
  * 
- * @author berdux
  *
  */
 public class PlayerView extends BorderPane {
-	/*
-	 * als Attribute werden die UI-Elemente aufgefuehrt, deren Inhalt man sicherlich
-	 * dann setzen will und natuerlich auch reagieren will.
-	 */
+	
 	Label titleLabel;
 	Label albumLabel;
 	Slider volSlider;
@@ -105,7 +101,6 @@ public class PlayerView extends BorderPane {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// coverView.getStyleClass().add("");
 
 		// ImageView wird in den ImageViewPane eingehuellt, damit es dann mitskaliert
 		ImageViewPane pane = new ImageViewPane(coverView);

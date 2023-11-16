@@ -9,8 +9,6 @@ import com.mpatric.mp3agic.UnsupportedTagException;
 
 /**
  * Repraesentation eines MP3s mit Metadaten.
- * 
- * @author berdux
  *
  */
 public class Track {
@@ -62,10 +60,6 @@ public class Track {
 		this.fileName = fileName;
 	}
 
-	/*
-	 * public Track(String title, String artist) { super(); this.title = title;
-	 * this.artist = artist; this.fileName = null; }
-	 */
 
 	public int getDuration() {
 		return duration;

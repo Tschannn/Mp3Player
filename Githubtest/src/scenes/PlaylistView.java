@@ -1,6 +1,5 @@
 package scenes;
 
-//import business.Song;
 import business.Track;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,12 +13,7 @@ import javafx.scene.layout.HBox;
 
 
 /**
- * PlaylistView soll dann irgrnedwann mal die aktuelle Playlist anzeigen.
- * 
- * Hier jetzt einfach mal als zweite Dummy-Szene definiert.
- * 
- * @author berdux
- *
+ * PlaylistView Fenster
  */
 public class PlaylistView extends BorderPane {
 	Label headerLabel;

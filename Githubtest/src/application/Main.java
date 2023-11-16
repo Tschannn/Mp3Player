@@ -19,21 +19,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
-/**
- * 5.1 - Beispiel fuer den Aufbau mit separaten Scenes, die als Root-Elemente definiert sind.
- * 
- * Modellierung:
- * - Eigene Screens als View-Komponenten definieren
- * - Einfache Verwaltung der Views ueber einen Katalog (als Map)
- * - Layout & Styling als CCS-Definition
- *
- *
- */
+
 public class Main extends Application {
-	//
 	private Stage primaryStage;
 	
-	// Verwaltung der einzelnen Screens
 	private Map<String, Pane> scenes;
 	
 	private MP3Player player;
@@ -42,9 +31,7 @@ public class Main extends Application {
 
 	public void init() {
 		
-		/* in der Anwednung gibt es einen Player, der dann von allen
-		 * Seiten/Views bzw. deren Controllern aus erreichbar ist
-		 */
+		
 		player = new MP3Player();
 		playlist = new Playlist();
 	}
@@ -62,15 +49,13 @@ public class Main extends Application {
 
 			scenes.put("PlaylistView", playlistController.getRoot());
 			
-			// Beispielhaft nehmen wir uns aus der Verwaltung jetzt einfach mal den Start-Screen raus
+			//Hauptfenster hier PlayerView
 			Pane root = scenes.get("PlayerView");
 			
 			Scene scene = new Scene(root,500,500);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			
-			/* das Hauptfenster sich zu merken ist eine gute Idee,
-			 * um dann zum Beispiel die Views wechseln zu koennen.
-			 */
+			
 			this.primaryStage = primaryStage;
 			primaryStage.getIcons().add(new Image("file:///C:/Users/Berha/eclipse-workspace/Mp3player_neu3/obamna.png"));
 			primaryStage.setScene(scene);

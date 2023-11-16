@@ -42,32 +42,7 @@ public class PlayerViewController {
 	MP3Player player;
 	Track akt;
 
-	/*
-	 * Listener als Memebr-Klasse, um den Listener eventuell auch mehrmals erzeugen
-	 * zu koennen (macht hier dann aber bei dem Beispiel keine eigentlichen Sinn, da
-	 * der Listener ja dann wirklich nur fuer den einen Button gedacht ist.
-	 * 
-	 * Zusaetzlich waere hier dann ein Zusatnd vorgesehen, um zwischen Play und
-	 * Pause hin und her zu wechseln. Nachtuerlich wurde man hier dann auch das Icon
-	 * des Button wechseln, am besten ueber eas Setzen eines Style-Attributs.
-	 
-	private class PlayEventHandler implements EventHandler<ActionEvent> {
-
-		boolean isPlaying;
-
-		@Override
-		public void handle(ActionEvent event) {
-			if (!isPlaying) {
-				isPlaying = !isPlaying;
-				player.play();
-			} else {
-				isPlaying = !isPlaying;
-				player.pause();
-			}
-		}
-
-	}
-*/
+	
 	public PlayerViewController(Main application, MP3Player player) {
 		this.application = application;
 		this.player = player;
@@ -93,12 +68,9 @@ public class PlayerViewController {
 
 		akt = player.aktuellerSong;
 
-		// Root-View zu haben ist immer eine gute Idee
 		root = mainView;
 
-		// nachdem die View in itialisiert ist, wird dann bei JavaFX
-		// standardmaessig die initialize-Methode aufgerufen, in der dann
-		// das Befuellen der GUI-Elemente und das Anmelden der Listener erfolgt
+		
 		initialize();
 
 	}
@@ -116,10 +88,7 @@ public class PlayerViewController {
 
 			if (!player.playing) {
 				player.play();
-//					Platform.runLater(() -> {
-//						endTimeLabel.setText(akt.getLaenge());
-//						endTimeLabel.valueProperty().set(akt.doubleValue());
-//					});
+
 				
 			} else {
 				player.resume();

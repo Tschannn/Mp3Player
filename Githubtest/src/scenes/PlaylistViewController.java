@@ -31,40 +31,34 @@ import javafx.stage.FileChooser;
 public class PlaylistViewController {
 	Main application;
 	Pane root;
-	
-	
-	
+
 	ListView<Track> playlistView;
 	Button zuruckButton;
 	Button filechooser;
-	
+
 	MP3Player player;
 	Playlist playlist;
-	
-	public PlaylistViewController(Main application,MP3Player player,Playlist playlist) {
+
+	public PlaylistViewController(Main application, MP3Player player, Playlist playlist) {
 		this.player = player;
 		this.application = application;
 		this.playlist = playlist;
 		System.out.println();
-		
-//		files = new FileChooser();
-//		files.setInitialDirectory(new File("file:///C:/Users/Berha/Downloads"));
-		
+
 		PlaylistView view = new PlaylistView();
 		playlistView = view.playlistView;
 		zuruckButton = view.zuruckButton;
 		filechooser = view.filechooser;
-		
+
 		root = view;
-		
+
 		initialize();
 	}
-	
+
 	public void initialize() {
-		// Dummy-Daten, die eigentlich vom Playlistmanegr kommen
 		ArrayList<Track> trackList = new ArrayList<Track>();
-		trackList= playlist.tracklist;		
-		
+		trackList = playlist.tracklist;
+
 		// angeben, wie eine Zelle aufgebaut wird
 		playlistView.setCellFactory(new Callback<ListView<Track>, ListCell<Track>>() {
 			@Override
@@ -72,7 +66,7 @@ public class PlaylistViewController {
 				return new TrackCell();
 			}
 		});
-		
+
 		// erkennen von selektiertem Track
 		playlistView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Track>() {
 
@@ -80,72 +74,61 @@ public class PlaylistViewController {
 			public void changed(ObservableValue<? extends Track> observable, Track oldTrack, Track newTrack) {
 
 				System.out.println(newTrack);
-				
-			
+
 				player.setSong(newTrack);
-				
-				
-				if(player.playing) {
+
+				if (player.playing) {
 					player.pause();
 					System.out.println(newTrack.getArtist());
 					System.out.println(newTrack.getTitle());
-					
+
 					player.play();
-				}else{
+				} else {
 					player.play();
 				}
-				
+
 			}
-			
+
 		});
-		
-		
+
 		// setzen des Darzustellenden Inhalts
 		ObservableList<Track> playlistModel = playlistView.getItems();
 		playlistModel.addAll(trackList);
-		
-		
+
 		playlistView.setId("table");
-		
-		zuruckButton.addEventHandler(ActionEvent.ACTION,
-				event -> {
-					application.switchScene("PlayerView");
-				}
-		);
 
-		
-	
-		
-		filechooser.addEventHandler(ActionEvent.ACTION,
-				event -> {
-					
-					JFileChooser fileChooser = new JFileChooser();
-					
-					fileChooser.setCurrentDirectory(new File(".//Songs//"));
-					fileChooser.setFileFilter(new FileNameExtensionFilter(".mp3", "mp3"));
-					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-					
-					int response = fileChooser.showSaveDialog(null);	//select file to save
+		zuruckButton.addEventHandler(ActionEvent.ACTION, event -> {
+			application.switchScene("PlayerView");
+		});
 
-					
-					if(response == JFileChooser.APPROVE_OPTION) {
-						System.out.println(playlist.tracklist);
-						File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
-						System.out.println(file);
-						playlist.tracklist.add(new Track(file.getAbsolutePath()));
-						System.out.println(playlist.tracklist);
-						changedSong();
-					}
-					
-				//	System.out.println("Hallo Palestine");
-				});
-		
+		filechooser.addEventHandler(ActionEvent.ACTION, event -> {
+
+			JFileChooser fileChooser = new JFileChooser();
+
+			fileChooser.setCurrentDirectory(new File(".//Songs//"));
+			fileChooser.setFileFilter(new FileNameExtensionFilter(".mp3", "mp3"));
+			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+			int response = fileChooser.showSaveDialog(null); // select file to save
+
+			if (response == JFileChooser.APPROVE_OPTION) {
+				System.out.println(playlist.tracklist);
+				File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+				System.out.println(file);
+				playlist.tracklist.add(new Track(file.getAbsolutePath()));
+				System.out.println(playlist.tracklist);
+				changedSong();
+			}
+
+			// System.out.println("Hallo Palestine");
+		});
+
 	}
-		public void changedSong() {
-			ObservableList<Track> playlistModel = playlistView.getItems();
-			playlistModel.setAll(playlist.tracklist);
-		
-		
+
+	public void changedSong() {
+		ObservableList<Track> playlistModel = playlistView.getItems();
+		playlistModel.setAll(playlist.tracklist);
+
 	}
 
 	public Pane getRoot() {
@@ -153,4 +136,3 @@ public class PlaylistViewController {
 	}
 
 }
-	

@@ -1,7 +1,5 @@
 package presentation.uicomponents;
 
-
-
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
@@ -11,15 +9,7 @@ import javafx.geometry.VPos;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 
-/*
-* Copyright (c) 2012, Oracle and/or its affiliates. All rights reserved.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*/
 
-/**
-*
-* @author akouznet
-*/
 public class ImageViewPane extends Region {
 
    private ObjectProperty<ImageView> imageViewProperty = new SimpleObjectProperty<ImageView>();
