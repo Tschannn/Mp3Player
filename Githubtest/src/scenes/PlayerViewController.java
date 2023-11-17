@@ -94,7 +94,8 @@ public class PlayerViewController {
 				player.resume();
 
 			}
-
+			setSongInfo();
+			setImage();
 		});
 
 		pauseButton.addEventFilter(ActionEvent.ACTION, event -> {
@@ -105,12 +106,14 @@ public class PlayerViewController {
 
 		fowardButton.addEventFilter(ActionEvent.ACTION, event -> {
 			player.skip();
-		}
-
-		);
+			setSongInfo();
+			setImage();
+		});
 
 		backwardButton.addEventFilter(ActionEvent.ACTION, event -> {
 			player.skipBack();
+			setSongInfo();
+			setImage();
 		}
 
 		);
@@ -145,7 +148,8 @@ public class PlayerViewController {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				player.currentTimeProperty();
-
+				double value = newValue.floatValue();
+			
 			}
 
 		});
@@ -191,7 +195,7 @@ public class PlayerViewController {
         try {
             coverView.setImage(new Image (new ByteArrayInputStream(player.aktuellerSong.getAlbumImage()))); 
         } catch (NullPointerException e){
-            e.printStackTrace();
+        	System.err.println("Dieses Lied hat kein Bild");
 
         }
     }

@@ -13,7 +13,6 @@ public class TrackCell extends ListCell<Track> {
 	VBox infoPane;
 	Label title;
 	Label artist;
-	CheckBox check;
 	
 	public TrackCell() {
 		// View-Definition
@@ -23,8 +22,7 @@ public class TrackCell extends ListCell<Track> {
 		infoPane.getChildren().addAll(title, artist);
 
 		root = new HBox();
-		check = new CheckBox();
-		root.getChildren().addAll(check, infoPane);
+		root.getChildren().addAll(infoPane);
 		
 	}
 	
@@ -35,7 +33,6 @@ public class TrackCell extends ListCell<Track> {
 		if (!empty) {
 			title.setText(item.getTitle());
 			artist.setText(item.getArtist());
-			check.setSelected(false);
 			
 			this.setGraphic(root);
 		} else {

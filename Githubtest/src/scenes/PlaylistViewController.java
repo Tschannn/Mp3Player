@@ -21,6 +21,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
@@ -31,11 +32,14 @@ import javafx.stage.FileChooser;
 public class PlaylistViewController {
 	Main application;
 	Pane root;
-
+	
+	PlayerView mainview;
 	ListView<Track> playlistView;
 	Button zuruckButton;
 	Button filechooser;
-
+	Label albumLabel;
+	Label titleLabel;
+	
 	MP3Player player;
 	Playlist playlist;
 
@@ -46,9 +50,13 @@ public class PlaylistViewController {
 		System.out.println();
 
 		PlaylistView view = new PlaylistView();
+		PlayerView mainview = new PlayerView();
+		
 		playlistView = view.playlistView;
 		zuruckButton = view.zuruckButton;
 		filechooser = view.filechooser;
+		albumLabel = mainview.albumLabel;
+		titleLabel = mainview.titleLabel;
 
 		root = view;
 
@@ -86,7 +94,7 @@ public class PlaylistViewController {
 				} else {
 					player.play();
 				}
-
+				setSongInfo();
 			}
 
 		});
@@ -134,5 +142,9 @@ public class PlaylistViewController {
 	public Pane getRoot() {
 		return root;
 	}
-
+	
+	 public void setSongInfo() {
+	        titleLabel.setText(player.aktuellerSong.getTitle());
+	        albumLabel.setText(player.aktuellerSong.getArtist()); 
+	    }
 }
