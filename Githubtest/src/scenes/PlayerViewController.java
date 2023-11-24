@@ -1,6 +1,8 @@
 package scenes;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 import application.Main;
 import business.MP3Player;
@@ -164,7 +166,11 @@ public class PlayerViewController {
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				Platform.runLater(() -> {
 					timeLabel.setText(MP3Player.formatTime(newValue.intValue()));
+					try {
 					timeSlider.setValue((double) newValue.intValue() * 100 / player.aktuellerSong.getDuration());
+					}catch (NullPointerException e) {
+						System.out.println("");
+					}
 //		            System.out.println("timeslider thing"+ newValue.intValue()/player.aktuellerSong.getDuration());
 					String sekunden = MP3Player.formatTime((int) (player.aktuellerSong.getDuration() - newValue.intValue()));
 					endTimeLabel.setText(sekunden);
@@ -214,7 +220,12 @@ public class PlayerViewController {
 		try {
 			coverView.setImage(new Image(new ByteArrayInputStream(player.aktuellerSong.getAlbumImage())));
 		} catch (NullPointerException e) {
-			System.err.println("Dieses Lied hat kein Bild");
+			try {
+				coverView.setImage(new Image(new FileInputStream("assets/spotify.png")));
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 
 		}
 	}

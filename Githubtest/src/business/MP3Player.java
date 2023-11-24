@@ -21,7 +21,6 @@ public class MP3Player {
 	private SimpleMinim minim;
 	SimpleAudioPlayer audioPlayer;
 	public boolean playing;
-	private boolean skipped = false;
 	private SimpleIntegerProperty currentTime;
 	private SimpleIntegerProperty endtime;
 	private SimpleObjectProperty<Track> tracks;
@@ -45,13 +44,12 @@ public class MP3Player {
 		endtime = new SimpleIntegerProperty(aktuellerSong.getDuration());
 		isShuffling = new SimpleBooleanProperty();
 		isPlaying = new SimpleBooleanProperty(false);
-		
+
 	}
 
 	public void play() {
 		tracks.set(aktuellerSong);
 		audioPlayer = minim.loadMP3File(aktuellerSong.getPath());
-		
 
 		if (audioPlayer != null) {
 			if (storedPlaybackPosition > 0) {
@@ -62,39 +60,33 @@ public class MP3Player {
 
 			}
 
-			
 		}
-		
+
 		timeThread = new Thread(() -> {
-			while(playing) {
+			while (playing) {
 				currentTime.setValue(audioPlayer.position());
 				endtime.setValue(aktuellerSong.getDuration());
 			}
 		});
-		
-		
-		
-		
+
 		playThread = new Thread(() -> {
-				playing = true;
-				isPlaying.set(true);
-				timeThread.start();
-				audioPlayer.play();
-				
-				
-				Platform.runLater(new Runnable() {
-					public void run() {
-						if(isSongEnd()) {
-							skip();
-						}
+			playing = true;
+			isPlaying.set(true);
+			timeThread.start();
+			audioPlayer.play();
+
+			Platform.runLater(new Runnable() {
+				public void run() {
+					if (isSongEnd()) {
+						skip();
 					}
+				}
 			});
-				
-		
+
 		});
 		setIsShuffling(false);
 		playThread.start();
-		
+
 		savedVolume = audioPlayer.getGain();
 		audioPlayer.setGain(savedVolume);
 	}
@@ -122,9 +114,7 @@ public class MP3Player {
 	/*-----------------------------------------*/
 
 	public boolean isSongEnd() {
-//		System.out.println(currentTime.get());
-//		System.out.println(aktuellerSong.getDuration());
-		return currentTime.get() >= aktuellerSong.getDuration()-500;
+		return currentTime.get() >= aktuellerSong.getDuration() - 500;
 	}
 
 	/*-----------------------------------------*/
@@ -154,7 +144,8 @@ public class MP3Player {
 			audioPlayer.play();
 			playing = true;
 		} else {
-			System.err.println("Sie haben keinen pausierten Song zum Fortsetzen oder der Song wird bereits abgespielt.");
+			System.err
+					.println("Sie haben keinen pausierten Song zum Fortsetzen oder der Song wird bereits abgespielt.");
 		}
 	}
 
@@ -179,35 +170,30 @@ public class MP3Player {
 
 	public synchronized Track skip() {
 		pause();
-		skipped = true;
 		setStoredPlaybackPosition(0);
 		aktuellerSong = playlist.get(++aktuell % playlist.tracklist.size());
 		System.out.println(aktuellerSong.getTitle());
-		
+
 		play();
 		audioPlayer.setGain(savedVolume);
-		
-		skipped = false;
+
 		return aktuellerSong;
 	}
 
 	public synchronized Track skipBack() {
 		pause();
-		skipped = true;
 		setStoredPlaybackPosition(0);
 		if (aktuell == 0) {
 			aktuell = playlist.tracklist.size() - 1;
 		} else if (aktuell > 0) {
 			aktuell--;
 		}
-		
+
 		aktuellerSong = playlist.get(aktuell);
-		
+
 		play();
-		
+
 		audioPlayer.setGain(savedVolume);
-		
-		skipped = false;
 
 		return aktuellerSong;
 
@@ -215,7 +201,6 @@ public class MP3Player {
 
 	public void volume(float d) {
 		audioPlayer.setGain((float) (10 * Math.log10(d)));
-//		System.out.printf("volume: %1.2f %n", d);
 	}
 
 	public SimpleIntegerProperty currentTimeProperty() {
@@ -225,15 +210,14 @@ public class MP3Player {
 	public int getCurrentTime() {
 		return currentTime.get();
 	}
-	
-	/*--------------------------------------*/
-	
-	 public SimpleBooleanProperty isPlayingProperty() {
-	        return isPlaying;
-	    }
 
 	/*--------------------------------------*/
 
+	public SimpleBooleanProperty isPlayingProperty() {
+		return isPlaying;
+	}
+
+	/*--------------------------------------*/
 
 	public SimpleIntegerProperty endTimeProperty() {
 		return endtime;
@@ -272,7 +256,7 @@ public class MP3Player {
 	public Playlist getPlaylist() {
 		return playlist;
 	}
-	
+
 	public float getsavedVolume() {
 		return savedVolume;
 	}
