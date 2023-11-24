@@ -11,7 +11,6 @@ public class Playlist {
 
 	private int aktuell;
 
-//	PlaylistManager playlistMan = new PlaylistManager();
 
 	File myObj = new File("Playlist.m3u");
 
@@ -49,4 +48,13 @@ public class Playlist {
 		return tracklist.get(aktuell);
 	}
 
+	public int getIndex(Track track) {
+		for (Track t: tracklist) {
+			if(t.getFileName()==track.getFileName()) {
+				return tracklist.indexOf(track); 
+			}
+		}
+		
+		return -1; 
+	}
 }

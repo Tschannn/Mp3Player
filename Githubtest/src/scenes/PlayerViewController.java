@@ -36,13 +36,12 @@ public class PlayerViewController {
 	Button backwardButton;
 	Button loopButton;
 	Button shuffleButton;
-	
+
 	ImageView coverView;
 
 	MP3Player player;
 	Track akt;
 
-	
 	public PlayerViewController(Main application, MP3Player player) {
 		this.application = application;
 		this.player = player;
@@ -70,26 +69,23 @@ public class PlayerViewController {
 
 		root = mainView;
 
-		
 		initialize();
 
 	}
 
 	public void initialize() {
-		
-		timeLabel.setText(MP3Player.formatTime(0));
-        endTimeLabel.setText("-" + MP3Player.formatTime(player.aktuellerSong.getDuration()));
-        
-        setImage();
-        setSongInfo();
 
-		
+		timeLabel.setText(MP3Player.formatTime(0));
+		endTimeLabel.setText("-" + MP3Player.formatTime(player.aktuellerSong.getDuration()));
+
+		setImage();
+		setSongInfo();
+
 		playButton.addEventHandler(ActionEvent.ACTION, event -> {
 
 			if (!player.playing) {
 				player.play();
 
-				
 			} else {
 				player.resume();
 
@@ -134,7 +130,6 @@ public class PlayerViewController {
 			application.switchScene("PlaylistView");
 		});
 
-		
 		volSlider.valueProperty().addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> oV, Number oldValue, Number newValue) {
 				float volume = newValue.floatValue();
@@ -149,63 +144,94 @@ public class PlayerViewController {
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				player.currentTimeProperty();
 				double value = newValue.floatValue();
-			
+
+			}
+
+		});
+		
+		player.isPlayingProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) { // If the song has ended
+                Platform.runLater(() -> {
+                    setSongInfo();
+                    setImage();
+                });
+            }
+        });
+
+		player.currentTimeProperty().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				Platform.runLater(() -> {
+					timeLabel.setText(MP3Player.formatTime(newValue.intValue()));
+					timeSlider.setValue((double) newValue.intValue() * 100 / player.aktuellerSong.getDuration());
+//		            System.out.println("timeslider thing"+ newValue.intValue()/player.aktuellerSong.getDuration());
+					String sekunden = MP3Player.formatTime((int) (player.aktuellerSong.getDuration() - newValue.intValue()));
+					endTimeLabel.setText(sekunden);
+				});
+			}
+		});
+
+		player.endTimeProperty().addListener((observable, oldValue, newValue) -> {
+			Platform.runLater(() -> {
+				endTimeLabel.setText("-" + MP3Player.formatTime(newValue.intValue()));
+			});
+		});
+
+		timeSlider.valueProperty().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				player.currentTimeProperty();
+
 			}
 
 		});
 
-		player.currentTimeProperty().addListener(new ChangeListener<Number>() {
+		timeSlider.setOnMouseDragged(event -> {
+			double sliderValue = timeSlider.getValue();
+			int currentTimeMillis = (int) (sliderValue * player.aktuellerSong.getDuration());
+			System.out.println(currentTimeMillis);
+			timeLabel.setText(MP3Player.formatTime(currentTimeMillis));
 
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                Platform.runLater(() -> {
-                    timeLabel.setText(MP3Player.formatTime(newValue.intValue()));
-                    Duration currentTime = Duration.millis(newValue.intValue());
-                    timeSlider.setValue(currentTime.toSeconds());
-                    String sekunden = MP3Player.formatTime((int) (player.aktuellerSong.getDuration() - newValue.intValue()));
-                    endTimeLabel.setText(sekunden);
-                    
-                });
+			int remainingMilis = player.aktuellerSong.getDuration() - currentTimeMillis;
+			endTimeLabel.setText("-" + MP3Player.formatTime(remainingMilis));
+		});
 
-            }
+		player.isShufflingProperty().addListener(new ChangeListener<Boolean>() {
 
-        });
-	
-		player.endTimeProperty().addListener((observable, oldValue, newValue) -> {
-            Platform.runLater(() -> {
-                endTimeLabel.setText("-" + MP3Player.formatTime(newValue.intValue()));
-            });
-        });
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean neuValue) {
+				Platform.runLater(() -> {
+					setSongInfo();
+					coverView.setImage(new Image(new ByteArrayInputStream(player.aktuellerSong.getAlbumImage())));
+				});
+			}
+		});
+	}
 
-
-        timeSlider.valueProperty().addListener(new ChangeListener<Number>() {
-
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                player.currentTimeProperty();
-
-            }
-
-        });
-}
-	
-
-	
 	public void setImage() {
-        try {
-            coverView.setImage(new Image (new ByteArrayInputStream(player.aktuellerSong.getAlbumImage()))); 
-        } catch (NullPointerException e){
-        	System.err.println("Dieses Lied hat kein Bild");
+		try {
+			coverView.setImage(new Image(new ByteArrayInputStream(player.aktuellerSong.getAlbumImage())));
+		} catch (NullPointerException e) {
+			System.err.println("Dieses Lied hat kein Bild");
 
-        }
-    }
-    public void setSongInfo() {
-        titleLabel.setText(player.aktuellerSong.getTitle());
-        albumLabel.setText(player.aktuellerSong.getArtist()); 
-    }
+		}
+	}
+
+	public void setSongInfo() {
+		titleLabel.setText(player.aktuellerSong.getTitle());
+		albumLabel.setText(player.aktuellerSong.getArtist());
+	}
+
+	public void setSongInfo(Track song) {
+		player.setAktuell(player.getPlaylist().getIndex(song));
+		setImage();
+		titleLabel.setText(song.getTitle());
+		albumLabel.setText(song.getArtist());
+	}
 
 	public Pane getRoot() {
 		return root;
 	}
-
 }

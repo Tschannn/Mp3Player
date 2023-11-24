@@ -45,7 +45,7 @@ public class Main extends Application {
 			PlayerViewController playerViewController = new PlayerViewController(this, player);
 			scenes.put("PlayerView", playerViewController.getRoot());
 			
-			PlaylistViewController playlistController = new PlaylistViewController(this,player,player.getPlaylist());
+			PlaylistViewController playlistController = new PlaylistViewController(this,player,player.getPlaylist(),playerViewController);
 
 			scenes.put("PlaylistView", playlistController.getRoot());
 			

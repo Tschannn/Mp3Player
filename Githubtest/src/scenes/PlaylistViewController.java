@@ -34,6 +34,7 @@ public class PlaylistViewController {
 	Pane root;
 	
 	PlayerView mainview;
+	PlayerViewController playerviewcontroller; 
 	ListView<Track> playlistView;
 	Button zuruckButton;
 	Button filechooser;
@@ -43,11 +44,13 @@ public class PlaylistViewController {
 	MP3Player player;
 	Playlist playlist;
 
-	public PlaylistViewController(Main application, MP3Player player, Playlist playlist) {
+	public PlaylistViewController(Main application, MP3Player player, Playlist playlist, PlayerViewController playerviewcontroller) {
 		this.player = player;
 		this.application = application;
 		this.playlist = playlist;
+		this.playerviewcontroller=playerviewcontroller; 
 		System.out.println();
+
 
 		PlaylistView view = new PlaylistView();
 		PlayerView mainview = new PlayerView();
@@ -77,26 +80,25 @@ public class PlaylistViewController {
 
 		// erkennen von selektiertem Track
 		playlistView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Track>() {
-
+			
 			@Override
 			public void changed(ObservableValue<? extends Track> observable, Track oldTrack, Track newTrack) {
 
-				System.out.println(newTrack);
-
 				player.setSong(newTrack);
-
+				playerviewcontroller.setSongInfo(newTrack);; 
 				if (player.playing) {
 					player.pause();
+					player.setStoredPlaybackPosition(0);
 					System.out.println(newTrack.getArtist());
 					System.out.println(newTrack.getTitle());
-
+					setSongInfo();
+					
 					player.play();
 				} else {
 					player.play();
+					setSongInfo();
 				}
-				setSongInfo();
 			}
-
 		});
 
 		// setzen des Darzustellenden Inhalts
@@ -108,7 +110,9 @@ public class PlaylistViewController {
 		zuruckButton.addEventHandler(ActionEvent.ACTION, event -> {
 			application.switchScene("PlayerView");
 		});
-
+		
+		
+//------------------------------------------------------------------------------
 		filechooser.addEventHandler(ActionEvent.ACTION, event -> {
 
 			JFileChooser fileChooser = new JFileChooser();
@@ -136,8 +140,16 @@ public class PlaylistViewController {
 	public void changedSong() {
 		ObservableList<Track> playlistModel = playlistView.getItems();
 		playlistModel.setAll(playlist.tracklist);
-
+		
+	    playlistView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Track>() {
+	        @Override
+	        public void changed(ObservableValue<? extends Track> observable, Track oldTrack, Track newTrack) {
+	            playerviewcontroller.setSongInfo(newTrack);
+	        }
+	    });
 	}
+
+	
 
 	public Pane getRoot() {
 		return root;
@@ -147,4 +159,7 @@ public class PlaylistViewController {
 	        titleLabel.setText(player.aktuellerSong.getTitle());
 	        albumLabel.setText(player.aktuellerSong.getArtist()); 
 	    }
-}
+	 
+	 
+	 
+}	
