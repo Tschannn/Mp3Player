@@ -150,15 +150,15 @@ public class PlayerViewController {
 			}
 
 		});
-		
+
 		player.isPlayingProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) { // If the song has ended
-                Platform.runLater(() -> {
-                    setSongInfo();
-                    setImage();
-                });
-            }
-        });
+			if (newValue) { // If the song has ended
+				Platform.runLater(() -> {
+					setSongInfo();
+					setImage();
+				});
+			}
+		});
 
 		player.currentTimeProperty().addListener(new ChangeListener<Number>() {
 
@@ -167,13 +167,14 @@ public class PlayerViewController {
 				Platform.runLater(() -> {
 					timeLabel.setText(MP3Player.formatTime(newValue.intValue()));
 					try {
-					timeSlider.setValue((double) newValue.intValue() * 100 / player.aktuellerSong.getDuration());
-					}catch (NullPointerException e) {
+						timeSlider.setValue((double) newValue.intValue() * 100 / player.aktuellerSong.getDuration());
+						String sekunden = MP3Player
+								.formatTime((int) (player.aktuellerSong.getDuration() - newValue.intValue()));
+						endTimeLabel.setText(sekunden);
+					} catch (NullPointerException e) {
 						System.out.println("");
 					}
-//		            System.out.println("timeslider thing"+ newValue.intValue()/player.aktuellerSong.getDuration());
-					String sekunden = MP3Player.formatTime((int) (player.aktuellerSong.getDuration() - newValue.intValue()));
-					endTimeLabel.setText(sekunden);
+
 				});
 			}
 		});
@@ -221,7 +222,7 @@ public class PlayerViewController {
 			coverView.setImage(new Image(new ByteArrayInputStream(player.aktuellerSong.getAlbumImage())));
 		} catch (NullPointerException e) {
 			try {
-				coverView.setImage(new Image(new FileInputStream("assets/spotify.png")));
+				coverView.setImage(new Image(new FileInputStream("assets/spotify.jpg")));
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
