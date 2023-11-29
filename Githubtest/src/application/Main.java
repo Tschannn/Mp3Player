@@ -4,20 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import business.MP3Player;
-import business.Playlist;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-import scenes.PlayerView;
-import scenes.PlaylistView;
 import scenes.PlaylistViewController;
 import scenes.PlayerViewController;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 
 
 public class Main extends Application {
@@ -26,14 +20,12 @@ public class Main extends Application {
 	private Map<String, Pane> scenes;
 	
 	private MP3Player player;
-	private Playlist playlist;
 	
 
 	public void init() {
 		
 		
 		player = new MP3Player();
-		playlist = new Playlist();
 	}
 	
 
@@ -57,7 +49,7 @@ public class Main extends Application {
 			
 			
 			this.primaryStage = primaryStage;
-			primaryStage.getIcons().add(new Image("file:///C:/Users/Berha/eclipse-workspace/Mp3player_neu3/obamna.png"));
+			primaryStage.getIcons().add(new Image("file:./obamna.png"));
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			

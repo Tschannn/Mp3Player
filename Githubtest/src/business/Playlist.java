@@ -9,13 +9,13 @@ public class Playlist {
 
 	public ArrayList<Track> tracklist = new ArrayList<Track>();
 
-	private int aktuell;
+	private int currentIndex;
 
 
 	File myObj = new File("Playlist.m3u");
 
 	public Playlist() {
-		this.aktuell = 0;
+		this.currentIndex = 0;
 		trackslesen();
 	}
 
@@ -45,7 +45,7 @@ public class Playlist {
 
 	public Track get() {
 
-		return tracklist.get(aktuell);
+		return tracklist.get(currentIndex);
 	}
 
 	public int getIndex(Track track) {

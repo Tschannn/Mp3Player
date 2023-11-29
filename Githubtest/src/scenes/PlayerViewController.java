@@ -11,15 +11,13 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.util.Duration;
+
 
 public class PlayerViewController {
 	private Main application;
@@ -38,11 +36,14 @@ public class PlayerViewController {
 	Button backwardButton;
 	Button loopButton;
 	Button shuffleButton;
-
 	ImageView coverView;
 
 	MP3Player player;
-	Track akt;
+	Track currentSong;
+
+	Button playPauseButton;
+	Image playImage, pauseImage;
+	ImageView pauseimg, playimg;
 
 	public PlayerViewController(Main application, MP3Player player) {
 		this.application = application;
@@ -56,7 +57,6 @@ public class PlayerViewController {
 		titleLabel = mainView.titleLabel;
 		playButton = mainView.playButton;
 		switchButton = mainView.switchButton;
-		pauseButton = mainView.pauseButton;
 		fowardButton = mainView.fowardButton;
 		backwardButton = mainView.backwardButton;
 		loopButton = mainView.loopButton;
@@ -66,8 +66,13 @@ public class PlayerViewController {
 		endTimeLabel = mainView.endTimeLabel;
 		timeSlider = mainView.timeSlider;
 		coverView = mainView.coverView;
+		pauseimg = mainView.pausebutton1;
+		playimg = mainView.playbutton1;
+		playPauseButton = mainView.playPauseButton;
 
-		akt = player.aktuellerSong;
+		playImage = mainView.playImage;
+		pauseImage = mainView.pauseImage;
+		currentSong = player.currentSong;
 
 		root = mainView;
 
@@ -78,29 +83,24 @@ public class PlayerViewController {
 	public void initialize() {
 
 		timeLabel.setText(MP3Player.formatTime(0));
-		endTimeLabel.setText("-" + MP3Player.formatTime(player.aktuellerSong.getDuration()));
+		endTimeLabel.setText("-" + MP3Player.formatTime(player.currentSong.getDuration()));
 
 		setImage();
 		setSongInfo();
 
-		playButton.addEventHandler(ActionEvent.ACTION, event -> {
+		playPauseButton.addEventHandler(ActionEvent.ACTION, event -> {
 
 			if (!player.playing) {
 				player.play();
 
 			} else {
-				player.resume();
+				player.pause();
 
 			}
+			updatePlayPauseButton();
 			setSongInfo();
 			setImage();
 		});
-
-		pauseButton.addEventFilter(ActionEvent.ACTION, event -> {
-			player.pause();
-		}
-
-		);
 
 		fowardButton.addEventFilter(ActionEvent.ACTION, event -> {
 			player.skip();
@@ -140,17 +140,6 @@ public class PlayerViewController {
 			}
 		});
 
-		timeSlider.valueProperty().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				player.currentTimeProperty();
-				double value = newValue.floatValue();
-
-			}
-
-		});
-
 		player.isPlayingProperty().addListener((observable, oldValue, newValue) -> {
 			if (newValue) { // If the song has ended
 				Platform.runLater(() -> {
@@ -167,9 +156,9 @@ public class PlayerViewController {
 				Platform.runLater(() -> {
 					timeLabel.setText(MP3Player.formatTime(newValue.intValue()));
 					try {
-						timeSlider.setValue((double) newValue.intValue() * 100 / player.aktuellerSong.getDuration());
+						timeSlider.setValue((double) newValue.intValue() * 100 / player.currentSong.getDuration());
 						String sekunden = MP3Player
-								.formatTime((int) (player.aktuellerSong.getDuration() - newValue.intValue()));
+								.formatTime((int) (player.currentSong.getDuration() - newValue.intValue()));
 						endTimeLabel.setText(sekunden);
 					} catch (NullPointerException e) {
 						System.out.println("");
@@ -190,19 +179,8 @@ public class PlayerViewController {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				player.currentTimeProperty();
-
 			}
 
-		});
-
-		timeSlider.setOnMouseDragged(event -> {
-			double sliderValue = timeSlider.getValue();
-			int currentTimeMillis = (int) (sliderValue * player.aktuellerSong.getDuration());
-			System.out.println(currentTimeMillis);
-			timeLabel.setText(MP3Player.formatTime(currentTimeMillis));
-
-			int remainingMilis = player.aktuellerSong.getDuration() - currentTimeMillis;
-			endTimeLabel.setText("-" + MP3Player.formatTime(remainingMilis));
 		});
 
 		player.isShufflingProperty().addListener(new ChangeListener<Boolean>() {
@@ -211,15 +189,45 @@ public class PlayerViewController {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean neuValue) {
 				Platform.runLater(() -> {
 					setSongInfo();
-					coverView.setImage(new Image(new ByteArrayInputStream(player.aktuellerSong.getAlbumImage())));
+					coverView.setImage(new Image(new ByteArrayInputStream(player.currentSong.getAlbumImage())));
 				});
+			}
+		});
+
+		timeSlider.setOnMousePressed(event -> { /* so lange slider gedrückt, pausieren */
+			player.pause();
+		});
+
+		timeSlider.setOnMouseDragged(event -> {
+			double sliderValue = timeSlider.getValue();
+			int currentTimeMillis = (int) (sliderValue * player.currentSong.getDuration());
+			timeLabel.setText(MP3Player.formatTime(currentTimeMillis / 100));
+
+			int remainingMilis = player.currentSong.getDuration() - currentTimeMillis / 100;
+			endTimeLabel.setText("-" + MP3Player.formatTime(remainingMilis));
+
+			player.setStoredPlaybackPosition(currentTimeMillis / 100);
+		});
+		timeSlider.setOnMouseReleased(event -> { /* wenn slider losgelassen, dasnn wieder abspielen */
+			player.play();
+		});
+	}
+
+	private void updatePlayPauseButton() {
+		Platform.runLater(() -> {
+
+			if (player.playing) {
+				playPauseButton.setGraphic(pauseimg);
+			} else {
+				playPauseButton.setGraphic(playimg);
+
 			}
 		});
 	}
 
 	public void setImage() {
 		try {
-			coverView.setImage(new Image(new ByteArrayInputStream(player.aktuellerSong.getAlbumImage())));
+			coverView.setImage(new Image(new ByteArrayInputStream(player.currentSong.getAlbumImage())));
 		} catch (NullPointerException e) {
 			try {
 				coverView.setImage(new Image(new FileInputStream("assets/spotify.jpg")));
@@ -232,8 +240,8 @@ public class PlayerViewController {
 	}
 
 	public void setSongInfo() {
-		titleLabel.setText(player.aktuellerSong.getTitle());
-		albumLabel.setText(player.aktuellerSong.getArtist());
+		titleLabel.setText(player.currentSong.getTitle());
+		albumLabel.setText(player.currentSong.getArtist());
 	}
 
 	public void setSongInfo(Track song) {

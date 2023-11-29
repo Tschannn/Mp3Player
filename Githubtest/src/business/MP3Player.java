@@ -1,23 +1,17 @@
 package business;
 
 import java.util.Collections;
-import java.util.Timer;
-
-import business.Playlist;
-import business.Track;
 import de.hsrm.mi.eibo.simpleplayer.SimpleAudioPlayer;
 import de.hsrm.mi.eibo.simpleplayer.SimpleMinim;
-import de.hsrm.mi.prog.util.StaticScanner;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
 public class MP3Player {
 
 	Playlist playlist;
-	public Track aktuellerSong;
+	public Track currentSong;
 	private SimpleMinim minim;
 	public SimpleAudioPlayer audioPlayer;
 	public boolean playing;
@@ -26,7 +20,7 @@ public class MP3Player {
 	private SimpleObjectProperty<Track> tracks;
 	private SimpleBooleanProperty isShuffling;
 	private SimpleBooleanProperty isPlaying;
-	private int aktuell;
+	private int currentSongIndex;
 	private Thread playThread;
 	private int storedPlaybackPosition;
 	private float savedVolume;
@@ -38,24 +32,24 @@ public class MP3Player {
 		this.playlist = new Playlist();
 
 		this.minim = new SimpleMinim();
-		aktuellerSong = playlist.get();
+		currentSong = playlist.get();
 		tracks = new SimpleObjectProperty<>();
 		currentTime = new SimpleIntegerProperty(0);
-		endtime = new SimpleIntegerProperty(aktuellerSong.getDuration());
+		endtime = new SimpleIntegerProperty(currentSong.getDuration());
 		isShuffling = new SimpleBooleanProperty();
 		isPlaying = new SimpleBooleanProperty(false);
 
 	}
 
 	public void play() {
-		tracks.set(aktuellerSong);
-		audioPlayer = minim.loadMP3File(aktuellerSong.getPath());
+		tracks.set(currentSong);
+		audioPlayer = minim.loadMP3File(currentSong.getPath());
 
 		if (audioPlayer != null) {
 			if (storedPlaybackPosition > 0) {
 				audioPlayer.cue(storedPlaybackPosition);
 			} else {
-				audioPlayer = minim.loadMP3File(aktuellerSong.getPath());
+				audioPlayer = minim.loadMP3File(currentSong.getPath());
 				currentTime.setValue(0);
 
 			}
@@ -65,14 +59,14 @@ public class MP3Player {
 		timeThread = new Thread(() -> {
 			while (playing) {
 				currentTime.setValue(audioPlayer.position());
-				endtime.setValue(aktuellerSong.getDuration());
+				endtime.setValue(currentSong.getDuration());
 			}
 		});
 
 		playThread = new Thread(() -> {
 			playing = true;
 			isPlaying.set(true);
-			timeThread.start();
+			timeThread.start();	//continuously update the time properties
 			audioPlayer.play();
 
 			Platform.runLater(new Runnable() {
@@ -114,7 +108,7 @@ public class MP3Player {
 	/*-----------------------------------------*/
 
 	public boolean isSongEnd() {
-		return currentTime.get() >= aktuellerSong.getDuration() - 500;
+		return currentTime.get() >= currentSong.getDuration() - 500;
 	}
 
 	/*-----------------------------------------*/
@@ -124,7 +118,7 @@ public class MP3Player {
 	}
 
 	public void setSong(Track neuerSong) {
-		aktuellerSong = neuerSong;
+		currentSong = neuerSong;
 		updateEndTime();
 	}
 
@@ -139,18 +133,6 @@ public class MP3Player {
 			;
 		}
 	}
-
-	public void resume() {
-		if (audioPlayer != null && !audioPlayer.isPlaying()) {
-			audioPlayer.cue(storedPlaybackPosition);
-			audioPlayer.play();
-			playing = true;
-		} else {
-			System.err
-					.println("Sie haben keinen pausierten Song zum Fortsetzen oder der Song wird bereits abgespielt.");
-		}
-	}
-
 	public void loop() {
 		audioPlayer.loop();
 	}
@@ -163,45 +145,58 @@ public class MP3Player {
 		}
 		Collections.shuffle(playlist.tracklist);
 		setIsShuffling(true);
-		aktuellerSong = playlist.get((int) (playlist.tracklist.size() * Math.random()));
-		setAktuell(playlist.getIndex(aktuellerSong));
+		currentSong = playlist.get((int) (playlist.tracklist.size() * Math.random()));
+		setAktuell(playlist.getIndex(currentSong));
 		setStoredPlaybackPosition(0);
 		play();
-		return aktuellerSong;
+		return currentSong;
 	}
 
 	public synchronized Track skip() {
 		pause();
 		setStoredPlaybackPosition(0);
-		aktuellerSong = playlist.get(++aktuell % playlist.tracklist.size());
-//		System.out.println(aktuellerSong.getTitle());
+		if(currentSongIndex<playlist.tracklist.size()-1) {
+			currentSongIndex++; 
+		}else {
+			currentSongIndex =0; 
+		}
+		currentSong = playlist.get(currentSongIndex % playlist.tracklist.size());
 
 		play();
 
-		return aktuellerSong;
+		return currentSong;
 	}
 
 	public synchronized Track skipBack() {
 		pause();
 		setStoredPlaybackPosition(0);
-		if (aktuell == 0) {
-			aktuell = playlist.tracklist.size() - 1;
-		} else if (aktuell > 0) {
-			aktuell--;
+		
+		if(currentSongIndex >playlist.tracklist.size()-1) {
+			currentSongIndex =0; 
+		}
+		if (currentSongIndex == 0) {
+			currentSongIndex = playlist.tracklist.size() - 1;
+		} else if (currentSongIndex > 0) {
+			currentSongIndex--;
 		}
 
-		aktuellerSong = playlist.get(aktuell);
+		currentSong = playlist.get(currentSongIndex);
 
 		play();
 
-		return aktuellerSong;
+		return currentSong;
 
 	}
 
 	public void volume(float d) {
-		audioPlayer.setGain((float) (10 * Math.log10(d)));
-		savedVolume = audioPlayer.getGain();
-	}
+		
+		if(audioPlayer!=null) {
+			audioPlayer.setGain((float) (10 * Math.log10(d)));
+			savedVolume = audioPlayer.getGain();
+		}else {
+			System.err.println("Audioplayer ist noch null"); }
+		
+		}
 
 	public SimpleIntegerProperty currentTimeProperty() {
 		return currentTime;
@@ -224,7 +219,7 @@ public class MP3Player {
 	}
 
 	public void updateEndTime() {
-		endtime.set(aktuellerSong.getDuration());
+		endtime.set(currentSong.getDuration());
 	}
 
 	public static String formatTime(int milliseconds) {
@@ -238,11 +233,11 @@ public class MP3Player {
 	}
 
 	public int getAktuell() {
-		return aktuell;
+		return currentSongIndex;
 	}
 
 	public void setAktuell(int aktuell) {
-		this.aktuell = aktuell;
+		this.currentSongIndex = aktuell;
 	}
 
 	public boolean isPlaying() {
@@ -262,3 +257,6 @@ public class MP3Player {
 	}
 
 }
+
+	
+	

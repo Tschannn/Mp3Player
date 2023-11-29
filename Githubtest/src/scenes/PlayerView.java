@@ -3,7 +3,6 @@ package scenes;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import business.MP3Player;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -40,9 +39,13 @@ public class PlayerView extends BorderPane {
 	Slider timeSlider;
 	Label timeLabel;
 	Label endTimeLabel;
-
+	
+	Button playPauseButton; 
+	ImageView playbutton1;
 	ImageView coverView;
-
+    final Image playImage = new Image("file:./assets/play3x.png");
+    final Image pauseImage = new Image("file:./assets/pause3x.png");
+    ImageView pausebutton1;
 	public PlayerView() {
 
 		VBox header = new VBox();
@@ -51,20 +54,27 @@ public class PlayerView extends BorderPane {
 		albumLabel = new Label("album");
 		albumLabel.getStyleClass().add("second-text");
 
+		
 		final Image playlistbbutton = new Image("file:./assets/playlist3x.png");
 		ImageView playlistbbutton1 = new ImageView(playlistbbutton);
 		playlistbbutton1.setFitHeight(25);
 		playlistbbutton1.setFitWidth(25);
 
-		final Image playbutton = new Image("file:./assets/play3x.png");
-		ImageView playbutton1 = new ImageView(playbutton);
+		playbutton1 = new ImageView(playImage);
 		playbutton1.setFitHeight(25);
 		playbutton1.setFitWidth(25);
+		
+//		final Image pausebutton = pauseImage; 
+		pausebutton1= new ImageView (pauseImage);
+		pausebutton1.setFitHeight(25); 
+		pausebutton1.setFitWidth(25); 
+		
 
-		final Image pausebutton = new Image("file:./assets/pause3x.png");
-		ImageView pausebutton1 = new ImageView(pausebutton);
-		pausebutton1.setFitHeight(25);
-		pausebutton1.setFitWidth(25);
+		playPauseButton = new Button(); 
+		playPauseButton.setGraphic(playbutton1);
+		playPauseButton.getStyleClass().add("control-button");
+		
+		
 
 		final Image fowardbutton = new Image("file:./assets/skip_next3x.png");
 		ImageView fowardbutton1 = new ImageView(fowardbutton);
@@ -98,20 +108,19 @@ public class PlayerView extends BorderPane {
 		try {
 			coverView.setImage(new Image(new FileInputStream("assets/onepiece.jpg")));
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		// ImageView wird in den ImageViewPane eingehuellt, damit es dann mitskaliert
 		ImageViewPane pane = new ImageViewPane(coverView);
-		this.setCenter(new ImageViewPane(coverView));
+		this.setCenter(pane);
 
 		VBox bottomPane = new VBox();
 		HBox timeLine = new HBox();
 		timeLabel = new Label("0:00");
 		timeSlider = new Slider();
 		endTimeLabel = new Label("0:00");
-		timeSlider.getStyleClass().add("time-slider");
+		timeSlider.getStyleClass().add("time-slider .track");
 		timeLine.getChildren().addAll(timeLabel, timeSlider, endTimeLabel);
 		timeLine.setSpacing(10);
 		timeLine.setPadding(new Insets(10));
@@ -120,6 +129,10 @@ public class PlayerView extends BorderPane {
 		HBox controller = new HBox();
 		volSlider = new Slider(0, 100, 0.50);
 		volSlider.setShowTickLabels(true);
+		volSlider.setShowTickMarks(true);
+		volSlider.setMajorTickUnit(0.10);
+		volSlider.setBlockIncrement(0.05);
+		volSlider.setPrefWidth(200);
 		volSlider.setMax(1);
 		volSlider.setMin(0);
 		volSlider.getStyleClass().add("volSlider");
@@ -127,8 +140,6 @@ public class PlayerView extends BorderPane {
 		switchButton.setGraphic(playlistbbutton1);
 		playButton = new Button();
 		playButton.setGraphic(playbutton1);
-		pauseButton = new Button();
-		pauseButton.setGraphic(pausebutton1);
 		fowardButton = new Button();
 		fowardButton.setGraphic(fowardbutton1);
 		backwardButton = new Button();
@@ -139,12 +150,11 @@ public class PlayerView extends BorderPane {
 		shuffleButton.setGraphic(shufflebutton1);
 		switchButton.getStyleClass().add("playlist-button");
 		playButton.getStyleClass().add("control-button");
-		pauseButton.getStyleClass().add("control-button");
 		fowardButton.getStyleClass().add("control-button");
 		backwardButton.getStyleClass().add("control-button");
 		loopButton.getStyleClass().add("control-button");
 		shuffleButton.getStyleClass().add("control-button");
-		controller.getChildren().addAll(switchButton, backwardButton, playButton, pauseButton, fowardButton, loopButton,
+		controller.getChildren().addAll(switchButton, backwardButton, playPauseButton,  fowardButton, loopButton,
 				shuffleButton, volSlider);
 		controller.setSpacing(10);
 		controller.setId("controller");

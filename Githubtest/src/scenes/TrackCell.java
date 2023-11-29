@@ -2,7 +2,6 @@ package scenes;
 
 
 import business.Track;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;

@@ -15,7 +15,6 @@ public class Track {
 	private String title;
 	private String artist;
 	private String fileName;
-	private double laenge;
 	private int duration;
 	Mp3File mp3file = null;
 	ID3v2 meta;
@@ -38,7 +37,6 @@ public class Track {
 			this.fileName = path;
 			this.title = meta.getTitle();
 			this.artist = meta.getArtist();
-			this.laenge = meta.getLength();
 			this.albumImage = meta.getAlbumImage();
 			this.duration = (int) mp3file.getLengthInSeconds() * 1000;
 
@@ -99,8 +97,6 @@ public class Track {
 		return fileName;
 	}
 
-	public double getLaenge() {
-		return laenge;
-	}
+
 
 }

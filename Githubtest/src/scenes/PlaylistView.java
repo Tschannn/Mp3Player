@@ -17,7 +17,7 @@ import javafx.scene.layout.HBox;
  */
 public class PlaylistView extends BorderPane {
 	Label headerLabel;
-	Button zuruckButton;
+	Button backButton;
 	Button filechooser;
 	ListView<Track> playlistView;
 
@@ -31,14 +31,14 @@ public class PlaylistView extends BorderPane {
 		this.setCenter(playlistView);
 		playlistView.setId("table");
 		
-		final Image zuruckbutton = new Image("file:///C:/Users/Berha/git/repository3/Githubtest/assets/home1.png");
+		final Image zuruckbutton = new Image("file:./assets/home1.png");
 		ImageView zuruckbutton1= new ImageView(zuruckbutton); 
 		zuruckbutton1.setFitHeight(25);
 		zuruckbutton1.setFitWidth(25);
 		
 
-		zuruckButton = new Button();
-		zuruckButton.setGraphic(zuruckbutton1);
+		backButton = new Button();
+		backButton.setGraphic(zuruckbutton1);
 		
 		filechooser = new Button("Select a new Song");
 
@@ -46,13 +46,13 @@ public class PlaylistView extends BorderPane {
 		BorderPane.setMargin(headerLabel, new Insets(10));
 
 
-		BorderPane.setAlignment(zuruckButton, Pos.CENTER);
-		BorderPane.setMargin(zuruckButton, new Insets(10));
+		BorderPane.setAlignment(backButton, Pos.CENTER);
+		BorderPane.setMargin(backButton, new Insets(10));
 
 	
-		zuruckButton.getStyleClass().add("control-button");
+		backButton.getStyleClass().add("control-button");
 		filechooser.getStyleClass().add("control-button"); 
-		controll.getChildren().addAll(zuruckButton,filechooser);
+		controll.getChildren().addAll(backButton,filechooser);
 
 		controll.setSpacing(10);
 		controll.setId("controller");
