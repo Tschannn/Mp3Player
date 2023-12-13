@@ -20,15 +20,6 @@ public class Track {
 	ID3v2 meta;
 	byte[] albumImage;
 
-	/**
-	 * Initialisierungskonstruktor
-	 * 
-	 * @param title    Titel des Songs
-	 * @param artist   Interpret des Songs
-	 * @param fileName Datei-Name der MP3-Datei
-	 * 
-	 */
-
 	public Track(String path) {
 		try {
 			mp3file = new Mp3File(path);
@@ -43,10 +34,8 @@ public class Track {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (UnsupportedTagException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvalidDataException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -58,7 +47,6 @@ public class Track {
 		this.fileName = fileName;
 	}
 
-
 	public int getDuration() {
 		return duration;
 	}
@@ -68,7 +56,7 @@ public class Track {
 	}
 
 	public byte[] getAlbumImage() {
-		
+
 		return albumImage;
 	}
 
@@ -93,10 +81,7 @@ public class Track {
 	}
 
 	public String getPath() {
-		// TODO Auto-generated method stub
 		return fileName;
 	}
-
-
 
 }

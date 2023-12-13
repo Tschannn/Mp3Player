@@ -167,7 +167,14 @@ public class PlayerViewController {
 				});
 			}
 		});
+		player.trackProperty().addListener(new ChangeListener<Track>() {
 
+			@Override
+			public void changed(ObservableValue<? extends Track> arg0, Track arg1, Track arg2) {
+				setSongInfo();
+			}
+			
+		});
 		player.endTimeProperty().addListener((observable, oldValue, newValue) -> {
 			Platform.runLater(() -> {
 				endTimeLabel.setText("-" + MP3Player.formatTime(newValue.intValue()));
@@ -194,21 +201,20 @@ public class PlayerViewController {
 			}
 		});
 
-		timeSlider.setOnMousePressed(event -> { /* so lange slider gedrückt, pausieren */
-			player.pause();
-		});
-
 		timeSlider.setOnMouseDragged(event -> {
 			double sliderValue = timeSlider.getValue();
 			int currentTimeMillis = (int) (sliderValue * player.currentSong.getDuration());
+			player.pause();
 			timeLabel.setText(MP3Player.formatTime(currentTimeMillis / 100));
 
 			int remainingMilis = player.currentSong.getDuration() - currentTimeMillis / 100;
 			endTimeLabel.setText("-" + MP3Player.formatTime(remainingMilis));
-
+			
 			player.setStoredPlaybackPosition(currentTimeMillis / 100);
 		});
 		timeSlider.setOnMouseReleased(event -> { /* wenn slider losgelassen, dasnn wieder abspielen */
+			player.setPlaying(true); 
+			updatePlayPauseButton(); 
 			player.play();
 		});
 	}

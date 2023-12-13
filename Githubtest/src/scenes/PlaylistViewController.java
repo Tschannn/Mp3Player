@@ -36,11 +36,10 @@ public class PlaylistViewController {
 	MP3Player player;
 	Playlist playlist;
 
-	public PlaylistViewController(Main application, MP3Player player, Playlist playlist, PlayerViewController playerviewcontroller) {
+	public PlaylistViewController(Main application, MP3Player player) {
 		this.player = player;
 		this.application = application;
-		this.playlist = playlist;
-		this.playerviewcontroller=playerviewcontroller; 
+		this.playlist = player.getPlaylist();
 
 
 		PlaylistView view = new PlaylistView();
@@ -59,7 +58,7 @@ public class PlaylistViewController {
 
 	public void initialize() {
 		ArrayList<Track> trackList = new ArrayList<Track>();
-		trackList = playlist.tracklist;
+		trackList = playlist.tracklist; //gleich setzung zur eigentlichen Playlist
 
 		// angeben, wie eine Zelle aufgebaut wird
 		playlistView.setCellFactory(new Callback<ListView<Track>, ListCell<Track>>() {
@@ -69,14 +68,13 @@ public class PlaylistViewController {
 			}
 		});
 
-		// erkennen von selektiertem Track
+		// erkennen von selektiertem Track und ändern des Liedes
 		playlistView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Track>() {
 			
 			@Override
 			public void changed(ObservableValue<? extends Track> observable, Track oldTrack, Track newTrack) {
-
+				try {
 				player.setSong(newTrack);
-				playerviewcontroller.setSongInfo(newTrack);; 
 				if (player.playing) {
 					player.pause();
 					player.setStoredPlaybackPosition(0);
@@ -89,7 +87,9 @@ public class PlaylistViewController {
 					player.play();
 					setSongInfo();
 				}
-			}
+			}catch(NullPointerException e){
+				System.out.println("");
+			}}
 		});
 
 		// setzen des Darzustellenden Inhalts
@@ -117,7 +117,7 @@ public class PlaylistViewController {
 			if (response == JFileChooser.APPROVE_OPTION) {
 				File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
 				playlist.tracklist.add(new Track(file.getAbsolutePath()));
-				System.out.println(playlist.tracklist);
+//				System.out.println(playlist.tracklist);
 				changedSong();
 			}
 
@@ -130,12 +130,16 @@ public class PlaylistViewController {
 		ObservableList<Track> playlistModel = playlistView.getItems();
 		playlistModel.setAll(playlist.tracklist);
 		
-	    playlistView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Track>() {
+	   /* playlistView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Track>() {
 	        @Override
 	        public void changed(ObservableValue<? extends Track> observable, Track oldTrack, Track newTrack) {
-	            playerviewcontroller.setSongInfo(newTrack);
-	        }
-	    });
+	            try {
+	        	playerviewcontroller.setSongInfo(newTrack);
+	            }catch(NullPointerException e) {
+	            	System.out.println("");
+	            }
+	            }
+	    });*/
 	}
 
 	

@@ -80,7 +80,7 @@
 	
 }
 
-#volSlider{
+.volSlider{
 	-fx-show-tick-labels: true;
 	-fx-show-tick-marks: true;
 }

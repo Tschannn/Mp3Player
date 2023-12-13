@@ -31,13 +31,15 @@ public class Main extends Application {
 
 	public void start(Stage primaryStage) {
 		try {
+			 primaryStage.setTitle("MP3- Player");
+			
 			scenes = new HashMap<String, Pane>();
 			
 			// Definition der Screens/Scenes
 			PlayerViewController playerViewController = new PlayerViewController(this, player);
 			scenes.put("PlayerView", playerViewController.getRoot());
 			
-			PlaylistViewController playlistController = new PlaylistViewController(this,player,player.getPlaylist(),playerViewController);
+			PlaylistViewController playlistController = new PlaylistViewController(this,player);
 
 			scenes.put("PlaylistView", playlistController.getRoot());
 			

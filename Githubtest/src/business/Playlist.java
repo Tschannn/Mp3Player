@@ -11,7 +11,6 @@ public class Playlist {
 
 	private int currentIndex;
 
-
 	File myObj = new File("Playlist.m3u");
 
 	public Playlist() {
@@ -32,7 +31,6 @@ public class Playlist {
 				}
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -49,12 +47,12 @@ public class Playlist {
 	}
 
 	public int getIndex(Track track) {
-		for (Track t: tracklist) {
-			if(t.getFileName()==track.getFileName()) {
-				return tracklist.indexOf(track); 
+		for (Track t : tracklist) {
+			if (t.getFileName() == track.getFileName()) {
+				return tracklist.indexOf(track);
 			}
 		}
-		
-		return -1; 
+
+		return -1;
 	}
 }

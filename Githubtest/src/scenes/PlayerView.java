@@ -21,31 +21,19 @@ import presentation.uicomponents.ImageViewPane;
  * 
  * - Anzeige des aktuellen Songs - Zeitangabe des Songs - Bedeinelemente des
  * Players
- * 
- *
  */
 public class PlayerView extends BorderPane {
-	
-	Label titleLabel;
-	Label albumLabel;
-	Slider volSlider;
-	Button playButton;
-	Button switchButton;
-	Button pauseButton;
-	Button fowardButton;
-	Button backwardButton;
-	Button loopButton;
-	Button shuffleButton;
-	Slider timeSlider;
-	Label timeLabel;
-	Label endTimeLabel;
-	
-	Button playPauseButton; 
-	ImageView playbutton1;
-	ImageView coverView;
-    final Image playImage = new Image("file:./assets/play3x.png");
-    final Image pauseImage = new Image("file:./assets/pause3x.png");
-    ImageView pausebutton1;
+
+	Label titleLabel, albumLabel, timeLabel, endTimeLabel;
+	Slider volSlider, timeSlider;
+	Button playButton, switchButton, pauseButton, fowardButton, backwardButton, loopButton, shuffleButton,
+			playPauseButton;
+	ImageView playbutton1, coverView;
+
+	final Image playImage = new Image("file:./assets/play3x.png");
+	final Image pauseImage = new Image("file:./assets/pause3x.png");
+	ImageView pausebutton1;
+
 	public PlayerView() {
 
 		VBox header = new VBox();
@@ -54,7 +42,6 @@ public class PlayerView extends BorderPane {
 		albumLabel = new Label("album");
 		albumLabel.getStyleClass().add("second-text");
 
-		
 		final Image playlistbbutton = new Image("file:./assets/playlist3x.png");
 		ImageView playlistbbutton1 = new ImageView(playlistbbutton);
 		playlistbbutton1.setFitHeight(25);
@@ -63,18 +50,14 @@ public class PlayerView extends BorderPane {
 		playbutton1 = new ImageView(playImage);
 		playbutton1.setFitHeight(25);
 		playbutton1.setFitWidth(25);
-		
-//		final Image pausebutton = pauseImage; 
-		pausebutton1= new ImageView (pauseImage);
-		pausebutton1.setFitHeight(25); 
-		pausebutton1.setFitWidth(25); 
-		
 
-		playPauseButton = new Button(); 
+		pausebutton1 = new ImageView(pauseImage);
+		pausebutton1.setFitHeight(25);
+		pausebutton1.setFitWidth(25);
+
+		playPauseButton = new Button();
 		playPauseButton.setGraphic(playbutton1);
 		playPauseButton.getStyleClass().add("control-button");
-		
-		
 
 		final Image fowardbutton = new Image("file:./assets/skip_next3x.png");
 		ImageView fowardbutton1 = new ImageView(fowardbutton);
@@ -110,7 +93,8 @@ public class PlayerView extends BorderPane {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-
+		
+		coverView.setPreserveRatio(true);
 		// ImageView wird in den ImageViewPane eingehuellt, damit es dann mitskaliert
 		ImageViewPane pane = new ImageViewPane(coverView);
 		this.setCenter(pane);
@@ -132,7 +116,7 @@ public class PlayerView extends BorderPane {
 		volSlider.setShowTickMarks(true);
 		volSlider.setMajorTickUnit(0.10);
 		volSlider.setBlockIncrement(0.05);
-		volSlider.setPrefWidth(200);
+		volSlider.setPrefWidth(180);
 		volSlider.setMax(1);
 		volSlider.setMin(0);
 		volSlider.getStyleClass().add("volSlider");
@@ -154,7 +138,7 @@ public class PlayerView extends BorderPane {
 		backwardButton.getStyleClass().add("control-button");
 		loopButton.getStyleClass().add("control-button");
 		shuffleButton.getStyleClass().add("control-button");
-		controller.getChildren().addAll(switchButton, backwardButton, playPauseButton,  fowardButton, loopButton,
+		controller.getChildren().addAll(switchButton, backwardButton, playPauseButton, fowardButton, loopButton,
 				shuffleButton, volSlider);
 		controller.setSpacing(10);
 		controller.setId("controller");
